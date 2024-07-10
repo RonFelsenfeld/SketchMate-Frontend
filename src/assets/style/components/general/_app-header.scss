@@ -3,12 +3,7 @@
   padding-inline: calc((100vw - $canvas-container-width) / 2);
 
   .logo {
-    font-size: em(32px);
-    font-family: $heading-font-family;
-
-    span {
-      color: $main-theme-clr;
-    }
+    @include logo;
   }
 
   .greeting-msg {

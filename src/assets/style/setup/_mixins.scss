@@ -25,3 +25,12 @@
 @mixin fullPageDimensions {
   min-height: calc(100dvh - $app-header-height);
 }
+
+@mixin logo($size: em(32px)) {
+  font-size: $size;
+  font-family: $heading-font-family;
+
+  span {
+    color: $main-theme-clr;
+  }
+}
