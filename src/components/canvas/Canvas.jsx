@@ -125,6 +125,8 @@ export function Canvas() {
   function clearCanvas() {
     const { width, height } = canvasRef.current
     contextRef.current.clearRect(0, 0, width, height)
+    setShapes([])
+    setSelectedShape(null)
   }
 
   function resizeCanvas(canvasEl) {
@@ -140,6 +142,7 @@ export function Canvas() {
         setShapes={setShapes}
         selectedShape={selectedShape}
         setSelectedShape={setSelectedShape}
+        clearCanvas={clearCanvas}
       />
 
       <div ref={canvasContainerRef} className="canvas-container">

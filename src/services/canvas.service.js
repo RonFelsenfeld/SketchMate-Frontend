@@ -4,12 +4,27 @@ export const LINE = 'line'
 export const ELLIPSE = 'ellipse'
 export const RECT = 'rect'
 
+const CANVAS_KEY = 'canvasDB'
+
 export const canvasService = {
   getDefaultPen,
   getNewShape,
   getClickedShape,
   getNewLine,
+  getCanvas,
+  saveCanvas,
 }
+
+function getCanvas() {
+  const shapes = utilService.loadFromStorage(CANVAS_KEY)
+  return shapes || []
+}
+
+function saveCanvas(shapes) {
+  utilService.saveToStorage(CANVAS_KEY, shapes)
+}
+
+////////////////////////////////////////////////////
 
 function getDefaultPen() {
   return {

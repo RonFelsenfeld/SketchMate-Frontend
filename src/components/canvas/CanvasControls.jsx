@@ -1,6 +1,13 @@
 import { ELLIPSE, LINE, RECT } from '../../services/canvas.service'
 
-export function CanvasControls({ setPen, shapes, setShapes, selectedShape, setSelectedShape }) {
+export function CanvasControls({
+  setPen,
+  shapes,
+  setShapes,
+  selectedShape,
+  setSelectedShape,
+  clearCanvas,
+}) {
   function onSetShape(shape) {
     setPen(prevPen => ({ ...prevPen, shape }))
   }
@@ -37,6 +44,10 @@ export function CanvasControls({ setPen, shapes, setShapes, selectedShape, setSe
 
       <button className="btn-size" onClick={() => onSetSize(-1)}>
         -
+      </button>
+
+      <button className="btn-clear" onClick={clearCanvas}>
+        Clear
       </button>
     </section>
   )
