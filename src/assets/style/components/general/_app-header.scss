@@ -5,6 +5,10 @@
   .logo {
     font-size: em(32px);
     font-family: $heading-font-family;
+
+    span {
+      color: $main-theme-clr;
+    }
   }
 
   .greeting-msg {

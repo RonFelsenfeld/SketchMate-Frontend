@@ -25,26 +25,16 @@ export function CanvasControls({
   }
 
   return (
-    <section className="canvas-controls">
-      <button className="btn-shape" onClick={() => onSetShape(LINE)}>
-        Pen
-      </button>
+    <section className="canvas-controls flex">
+      <button className="btn btn-pen" onClick={() => onSetShape(LINE)}></button>
 
-      <button className="btn-shape" onClick={() => onSetShape(RECT)}>
-        Square
-      </button>
+      <button className="btn btn-shape square" onClick={() => onSetShape(RECT)}></button>
 
-      <button className="btn-shape" onClick={() => onSetShape(ELLIPSE)}>
-        Ellipse
-      </button>
+      <button className="btn btn-shape ellipse" onClick={() => onSetShape(ELLIPSE)}></button>
 
-      <button className="btn-size" onClick={() => onSetSize(1)}>
-        +
-      </button>
+      <button className="btn btn-size plus" onClick={() => onSetSize(1)}></button>
 
-      <button className="btn-size" onClick={() => onSetSize(-1)}>
-        -
-      </button>
+      <button className="btn btn-size minus" onClick={() => onSetSize(-1)}></button>
 
       <button className="btn-clear" onClick={clearCanvas}>
         Clear

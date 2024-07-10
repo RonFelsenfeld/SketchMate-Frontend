@@ -2,6 +2,71 @@
   position: absolute;
   inset: 0 auto auto 50%;
 
-  background-color: lightblue;
-  transform: translate(-50%, 50%);
+  align-items: stretch;
+  gap: 10px;
+
+  padding: 10px 15px;
+  border: 1px solid $controls-border-clr;
+  border-radius: $controls-border-radius;
+
+  background-color: $main-theme-clr;
+  transform: translate(-50%, 0);
+  box-shadow: $controls-shadow;
+
+  .btn {
+    width: em(32px);
+    height: em(32px);
+    border-radius: $controls-border-radius;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: #d5d5d5;
+      scale: 1.05;
+    }
+
+    &::before {
+      font-size: em(14px);
+      font-family: FaSolid;
+    }
+
+    &.btn-pen {
+      &::before {
+        content: '\f304';
+      }
+    }
+
+    &.btn-shape {
+      &.square {
+        &::before {
+          content: '\f0c8';
+        }
+      }
+
+      &.ellipse {
+        &::before {
+          content: '\f111';
+        }
+      }
+    }
+
+    &.btn-size {
+      &.plus {
+        &::before {
+          content: '\2b';
+        }
+      }
+
+      &.minus {
+        &::before {
+          content: '\f068';
+        }
+      }
+    }
+  }
+
+  .btn-clear {
+    padding-inline: rem(20px);
+    border-radius: $controls-border-radius;
+    font-size: em(16px);
+  }
 }
