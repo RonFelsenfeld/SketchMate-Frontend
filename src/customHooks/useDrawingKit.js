@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { canvasService } from '../services/canvas.service'
+import { canvasService, ELLIPSE, RECT } from '../services/canvas.service'
 
 export function useDrawingKit(canvasRef, contextRef) {
   const [pen, setPen] = useState(canvasService.getDefaultPen())
@@ -7,9 +7,9 @@ export function useDrawingKit(canvasRef, contextRef) {
 
   function onDrawShape(shape, x, y) {
     const shapesDrawingMap = {
-      line: drawLine,
-      rect: drawRect,
-      ellipse: drawEllipse,
+      line: _drawLine,
+      rect: _drawRect,
+      ellipse: _drawEllipse,
     }
 
     // If shape is of type string --> Generate and render new shape.
@@ -27,7 +27,7 @@ export function useDrawingKit(canvasRef, contextRef) {
     setPen(prevPen => ({ ...prevPen, isDrawing: false }))
   }
 
-  function drawLine(line) {
+  function _drawLine(line) {
     const { positions } = line
     positions.forEach(pos => {
       contextRef.current.lineTo(pos.x, pos.y)
@@ -36,17 +36,39 @@ export function useDrawingKit(canvasRef, contextRef) {
     setShapes(prevShapes => [...prevShapes, line])
   }
 
-  function drawRect(rect, x, y) {
+  function _drawRect(rect, x, y) {
     const { width, height } = rect
     contextRef.current.strokeRect(x, y, width, height)
     setShapes(prevShapes => [...prevShapes, rect])
   }
 
-  function drawEllipse(ellipse, x, y) {
+  function _drawEllipse(ellipse, x, y) {
     const { width, height } = ellipse
     contextRef.current.ellipse(x, y, width, height, 0, 0, 2 * Math.PI)
     contextRef.current.stroke()
     setShapes(prevShapes => [...prevShapes, ellipse])
+  }
+
+  function highlightSelectedShape(shape) {
+    const { type, x, y, width, height } = shape
+
+    contextRef.current.beginPath()
+    contextRef.current.setLineDash([10, 10])
+    contextRef.current.lineWidth = 2
+    contextRef.current.strokeStyle = 'black'
+
+    if (type === RECT) {
+      contextRef.current.strokeRect(x - 10, y - 10, width + 2 * 10, height + 2 * 10)
+    } else if (type === ELLIPSE) {
+      contextRef.current.ellipse(x, y, width + 10, height + 10, 0, 0, 2 * Math.PI)
+      contextRef.current.stroke()
+    }
+    contextRef.current.closePath()
+  }
+
+  function resetContext() {
+    contextRef.current.setLineDash([])
+    contextRef.current.lineWidth = 1
   }
 
   function clearCanvas() {
@@ -61,6 +83,8 @@ export function useDrawingKit(canvasRef, contextRef) {
     shapes,
     setShapes,
     onDrawShape,
+    highlightSelectedShape,
+    resetContext,
     clearCanvas,
   }
 }

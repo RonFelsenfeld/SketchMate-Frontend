@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { canvasService, ELLIPSE, LINE, RECT } from '../../services/canvas.service'
-import { CanvasControls } from './CanvasControls'
+import { canvasService, LINE } from '../../services/canvas.service'
 import { useDrawingKit } from '../../customHooks/useDrawingKit'
+import { CanvasControls } from './CanvasControls'
 
 export function Canvas() {
   const [selectedShape, setSelectedShape] = useState(null)
@@ -9,10 +9,16 @@ export function Canvas() {
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
 
-  const { pen, setPen, shapes, setShapes, onDrawShape, clearCanvas } = useDrawingKit(
-    canvasRef,
-    contextRef
-  )
+  const {
+    pen,
+    setPen,
+    shapes,
+    setShapes,
+    onDrawShape,
+    highlightSelectedShape,
+    resetContext,
+    clearCanvas,
+  } = useDrawingKit(canvasRef, contextRef)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -24,7 +30,7 @@ export function Canvas() {
   useEffect(() => {
     clearCanvas()
     renderShapes()
-    if (selectedShape) highlightSelectedShape()
+    if (selectedShape) highlightSelectedShape(selectedShape)
   }, [selectedShape])
 
   function onStartDrawing({ nativeEvent }) {
@@ -44,6 +50,7 @@ export function Canvas() {
     const { offsetX, offsetY } = nativeEvent
     if (shape === LINE) {
       contextRef.current.lineTo(offsetX, offsetY)
+      resetContext()
       contextRef.current.stroke()
 
       const linePositions = [...pen.linePositions, { x: offsetX, y: offsetY }]
@@ -79,31 +86,13 @@ export function Canvas() {
   function renderShapes() {
     const shapesToRender = [...shapes]
     setShapes([])
-    contextRef.current.setLineDash([])
-    contextRef.current.lineWidth = 1
+    resetContext()
     shapesToRender.forEach(shape => onDrawShape(shape, shape.x, shape.y))
   }
 
   function resizeCanvas(canvasEl) {
     canvasEl.width = canvasContainerRef.current.clientWidth
     canvasEl.height = canvasContainerRef.current.clientHeight
-  }
-
-  function highlightSelectedShape() {
-    const { type, x, y, width, height } = selectedShape
-
-    contextRef.current.beginPath()
-    contextRef.current.setLineDash([10, 10])
-    contextRef.current.lineWidth = 2
-    contextRef.current.strokeStyle = 'black'
-
-    if (type === RECT) {
-      contextRef.current.strokeRect(x - 10, y - 10, width + 2 * 10, height + 2 * 10)
-    } else if (type === ELLIPSE) {
-      contextRef.current.ellipse(x, y, width + 10, height + 10, 0, 0, 2 * Math.PI)
-      contextRef.current.stroke()
-    }
-    contextRef.current.closePath()
   }
 
   return (
