@@ -51,7 +51,6 @@ function getNewLine(linePositions) {
     _id: utilService.makeId(),
     type: LINE,
     positions: [...linePositions],
-    isDrawing: false,
   }
 }
 

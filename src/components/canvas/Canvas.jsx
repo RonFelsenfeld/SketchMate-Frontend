@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { canvasService, LINE } from '../../services/canvas.service'
+import { canvasService, ELLIPSE, LINE, RECT } from '../../services/canvas.service'
 import { CanvasControls } from './CanvasControls'
 
 export function Canvas() {
@@ -21,6 +21,7 @@ export function Canvas() {
   useEffect(() => {
     clearCanvas()
     renderShapes()
+    if (selectedShape) highlightSelectedShape()
   }, [selectedShape])
 
   function onStartDrawing({ nativeEvent }) {
@@ -66,6 +67,7 @@ export function Canvas() {
     }
 
     contextRef.current.beginPath()
+
     shapesDrawingMap[shapeToAdd.type](shapeToAdd, x, y)
     contextRef.current.closePath()
     setPen(prevPen => ({ ...prevPen, isDrawing: false }))
@@ -119,6 +121,8 @@ export function Canvas() {
   function renderShapes() {
     const shapesToRender = [...shapes]
     setShapes([])
+    contextRef.current.setLineDash([])
+    contextRef.current.lineWidth = 1
     shapesToRender.forEach(shape => onDrawShape(shape, shape.x, shape.y))
   }
 
@@ -126,12 +130,28 @@ export function Canvas() {
     const { width, height } = canvasRef.current
     contextRef.current.clearRect(0, 0, width, height)
     setShapes([])
-    setSelectedShape(null)
   }
 
   function resizeCanvas(canvasEl) {
     canvasEl.width = canvasContainerRef.current.clientWidth
     canvasEl.height = canvasContainerRef.current.clientHeight
+  }
+
+  function highlightSelectedShape() {
+    const { type, x, y, width, height } = selectedShape
+
+    contextRef.current.beginPath()
+    contextRef.current.setLineDash([10, 10])
+    contextRef.current.lineWidth = 2
+    contextRef.current.strokeStyle = 'black'
+
+    if (type === RECT) {
+      contextRef.current.strokeRect(x - 10, y - 10, width + 2 * 10, height + 2 * 10)
+    } else if (type === ELLIPSE) {
+      contextRef.current.ellipse(x, y, width + 10, height + 10, 0, 0, 2 * Math.PI)
+      contextRef.current.stroke()
+    }
+    contextRef.current.closePath()
   }
 
   return (
