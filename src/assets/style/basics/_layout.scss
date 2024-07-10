@@ -1,0 +1,12 @@
+.main-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr 300px;
+
+  > *:not(.full) {
+    grid-column: 2;
+  }
+
+  > .full {
+    grid-column: 1 / -1;
+  }
+}
