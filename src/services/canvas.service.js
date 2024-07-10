@@ -6,25 +6,37 @@ export const RECT = 'rect'
 
 export const canvasService = {
   getDefaultPen,
-  generateShape,
+  getNewShape,
   getClickedShape,
+  getNewLine,
 }
 
 function getDefaultPen() {
   return {
     color: '#000',
     shape: LINE,
+    linePositions: [],
     isDrawing: false,
   }
 }
 
-function generateShape(shape, x, y) {
+function getNewShape(shape, x, y) {
   return {
     _id: utilService.makeId(),
+    type: shape,
     x,
     y,
     width: shape === RECT ? 30 : 20,
     height: 30,
+  }
+}
+
+function getNewLine(linePositions) {
+  return {
+    _id: utilService.makeId(),
+    type: LINE,
+    positions: [...linePositions],
+    isDrawing: false,
   }
 }
 

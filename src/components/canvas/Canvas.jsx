@@ -1,11 +1,12 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState } from 'react'
-import { canvasService, ELLIPSE, LINE, RECT } from '../../services/canvas.service'
+import { canvasService, LINE } from '../../services/canvas.service'
 import { CanvasControls } from './CanvasControls'
 
 export function Canvas() {
   const [pen, setPen] = useState(canvasService.getDefaultPen())
   const [shapes, setShapes] = useState([])
+  const [selectedShape, setSelectedShape] = useState(null)
+
   const canvasContainerRef = useRef(null)
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
@@ -17,11 +18,18 @@ export function Canvas() {
     resizeCanvas(canvas)
   }, [])
 
+  useEffect(() => {
+    clearCanvas()
+    renderShapes()
+  }, [selectedShape])
+
   function onStartDrawing({ nativeEvent }) {
     const { offsetX, offsetY } = nativeEvent
     contextRef.current.moveTo(offsetX, offsetY)
     contextRef.current.beginPath()
-    setPen(prevPen => ({ ...prevPen, isDrawing: true }))
+
+    const pos = { x: offsetX, y: offsetY }
+    setPen(prevPen => ({ ...prevPen, linePositions: [pos], isDrawing: true }))
   }
 
   function onDrawing({ nativeEvent }) {
@@ -33,41 +41,90 @@ export function Canvas() {
     if (shape === LINE) {
       contextRef.current.lineTo(offsetX, offsetY)
       contextRef.current.stroke()
+
+      const linePositions = [...pen.linePositions, { x: offsetX, y: offsetY }]
+      setPen(prevPen => ({ ...prevPen, linePositions, isDrawing: true }))
     } else {
-      onAddShape(shape, offsetX, offsetY)
+      onDrawShape(shape, offsetX, offsetY)
     }
   }
 
-  function onAddShape(shape, x, y) {
-    if (shape === LINE) return
+  function onDrawShape(shape, x, y) {
+    const shapesDrawingMap = {
+      line: drawLine,
+      rect: drawRect,
+      ellipse: drawEllipse,
+    }
+
+    // If shape is of type string --> Generate and render new shape.
+    // Else --> Draw existing shape (represented as an object)
+    let shapeToAdd
+    if (typeof shape === 'string') {
+      shapeToAdd = canvasService.getNewShape(shape, x, y)
+    } else {
+      shapeToAdd = { ...shape }
+    }
 
     contextRef.current.beginPath()
-    switch (shape) {
-      case RECT:
-        drawRect(x, y)
-        break
-
-      case ELLIPSE:
-        drawEllipse(x, y)
-        break
-    }
-    contextRef.current.closePath()
-  }
-
-  function onEndDrawing() {
+    shapesDrawingMap[shapeToAdd.type](shapeToAdd, x, y)
     contextRef.current.closePath()
     setPen(prevPen => ({ ...prevPen, isDrawing: false }))
   }
 
+  function onEndDrawing() {
+    contextRef.current.closePath()
+    if (pen.shape !== LINE) return
+
+    const newLine = canvasService.getNewLine(pen.linePositions)
+
+    setPen(prevPen => ({ ...prevPen, linePositions: [], isDrawing: false }))
+    setShapes(prevShapes => [...prevShapes, newLine])
+  }
+
   function onCanvasClicked({ nativeEvent }) {
+    setSelectedShape(null)
+
     const { offsetX, offsetY } = nativeEvent
     const clickedShape = canvasService.getClickedShape(shapes, offsetX, offsetY)
 
     if (clickedShape) {
-      console.log('clicked!')
-    } else {
-      onAddShape(pen.shape, offsetX, offsetY)
+      setSelectedShape(clickedShape)
+    } else if (pen.shape !== LINE) {
+      onDrawShape(pen.shape, offsetX, offsetY)
     }
+  }
+
+  function drawLine(line) {
+    const { positions } = line
+    positions.forEach(pos => {
+      contextRef.current.lineTo(pos.x, pos.y)
+      contextRef.current.stroke()
+    })
+    setShapes(prevShapes => [...prevShapes, line])
+  }
+
+  function drawRect(rect, x, y) {
+    const { width, height } = rect
+    contextRef.current.strokeRect(x, y, width, height)
+    setShapes(prevShapes => [...prevShapes, rect])
+  }
+
+  function drawEllipse(ellipse, x, y) {
+    const { width, height } = ellipse
+    contextRef.current.ellipse(x, y, width, height, 0, 0, 2 * Math.PI)
+    contextRef.current.stroke()
+    setShapes(prevShapes => [...prevShapes, ellipse])
+  }
+
+  function renderShapes() {
+    const shapesToRender = [...shapes]
+    setShapes([])
+    shapesToRender.forEach(shape => onDrawShape(shape, shape.x, shape.y))
+  }
+
+  function clearCanvas() {
+    const { width, height } = canvasRef.current
+    contextRef.current.clearRect(0, 0, width, height)
   }
 
   function resizeCanvas(canvasEl) {
@@ -75,24 +132,15 @@ export function Canvas() {
     canvasEl.height = canvasContainerRef.current.clientHeight
   }
 
-  function drawRect(x, y) {
-    const rect = canvasService.generateShape(RECT, x, y)
-    const { width, height } = rect
-    contextRef.current.strokeRect(x, y, width, height)
-    setShapes(prevShapes => [...prevShapes, rect])
-  }
-
-  function drawEllipse(x, y) {
-    const ellipse = canvasService.generateShape(ELLIPSE, x, y)
-    const { width, height } = ellipse
-    contextRef.current.ellipse(x, y, width, height, 0, 0, 2 * Math.PI)
-    contextRef.current.stroke()
-    setShapes(prevShapes => [...prevShapes, ellipse])
-  }
-
   return (
     <section className="canvas-section">
-      <CanvasControls setPen={setPen} />
+      <CanvasControls
+        setPen={setPen}
+        shapes={shapes}
+        setShapes={setShapes}
+        selectedShape={selectedShape}
+        setSelectedShape={setSelectedShape}
+      />
 
       <div ref={canvasContainerRef} className="canvas-container">
         <canvas
