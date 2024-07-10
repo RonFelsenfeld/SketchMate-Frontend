@@ -5,6 +5,7 @@ import { CanvasControls } from './CanvasControls'
 
 export function Canvas() {
   const [selectedShape, setSelectedShape] = useState(null)
+  const [dragInfo, setDragInfo] = useState(canvasService.getDefaultDragInfo())
   const canvasContainerRef = useRef(null)
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
@@ -15,8 +16,9 @@ export function Canvas() {
     shapes,
     setShapes,
     onDrawShape,
+    drawAllShapes,
     highlightSelectedShape,
-    resetContext,
+    resetStrokeStyle,
     clearCanvas,
   } = useDrawingKit(canvasRef, contextRef)
 
@@ -29,32 +31,52 @@ export function Canvas() {
 
   useEffect(() => {
     clearCanvas()
-    renderShapes()
+    drawAllShapes()
     if (selectedShape) highlightSelectedShape(selectedShape)
   }, [selectedShape])
 
+  function onCanvasClicked({ nativeEvent }) {
+    // When dragging and releasing, it counts as a click. (Therefore, need to prevent it)
+    if (dragInfo.isDragging) return handleEndDragging()
+    setSelectedShape(null)
+
+    const { offsetX, offsetY } = nativeEvent
+    const clickedShape = canvasService.findClickedShape(shapes, offsetX, offsetY)
+
+    if (clickedShape) {
+      setSelectedShape(clickedShape)
+    } else if (pen.shape !== LINE) {
+      onDrawShape(pen.shape, offsetX, offsetY)
+    }
+  }
+
   function onStartDrawing({ nativeEvent }) {
     const { offsetX, offsetY } = nativeEvent
+    const clickedShape = canvasService.findClickedShape(shapes, offsetX, offsetY)
+    if (clickedShape) return handleStartDragging(clickedShape, offsetX, offsetY)
+
     contextRef.current.moveTo(offsetX, offsetY)
     contextRef.current.beginPath()
 
+    resetStrokeStyle()
     const pos = { x: offsetX, y: offsetY }
     setPen(prevPen => ({ ...prevPen, linePositions: [pos], isDrawing: true }))
   }
 
   function onDrawing({ nativeEvent }) {
-    const { isDrawing, shape } = pen
-    // todo: enable unlimited drawing shapes?
-    if (!isDrawing || shape !== LINE) return
-
     const { offsetX, offsetY } = nativeEvent
+    if (dragInfo.isDragging) return handleDrag(offsetX, offsetY)
+
+    const { isDrawing, shape } = pen
+    if (!isDrawing || shape !== LINE) return
+    // todo: allow unlimited drawing shapes?
+
     if (shape === LINE) {
       contextRef.current.lineTo(offsetX, offsetY)
-      resetContext()
       contextRef.current.stroke()
 
       const linePositions = [...pen.linePositions, { x: offsetX, y: offsetY }]
-      setPen(prevPen => ({ ...prevPen, linePositions, isDrawing: true }))
+      setPen(prevPen => ({ ...prevPen, linePositions }))
     } else {
       onDrawShape(shape, offsetX, offsetY)
     }
@@ -65,34 +87,38 @@ export function Canvas() {
     if (pen.shape !== LINE) return
 
     const newLine = canvasService.getNewLine(pen.linePositions)
-
     setPen(prevPen => ({ ...prevPen, linePositions: [], isDrawing: false }))
     setShapes(prevShapes => [...prevShapes, newLine])
-  }
-
-  function onCanvasClicked({ nativeEvent }) {
-    setSelectedShape(null)
-
-    const { offsetX, offsetY } = nativeEvent
-    const clickedShape = canvasService.getClickedShape(shapes, offsetX, offsetY)
-
-    if (clickedShape) {
-      setSelectedShape(clickedShape)
-    } else if (pen.shape !== LINE) {
-      onDrawShape(pen.shape, offsetX, offsetY)
-    }
-  }
-
-  function renderShapes() {
-    const shapesToRender = [...shapes]
-    setShapes([])
-    resetContext()
-    shapesToRender.forEach(shape => onDrawShape(shape, shape.x, shape.y))
   }
 
   function resizeCanvas(canvasEl) {
     canvasEl.width = canvasContainerRef.current.clientWidth
     canvasEl.height = canvasContainerRef.current.clientHeight
+  }
+
+  function handleStartDragging(shape, x, y) {
+    console.log('START DRAGGING')
+    setSelectedShape(shape)
+    setDragInfo({ isDragging: true, pos: { x, y } })
+  }
+
+  function handleDrag(offsetX, offsetY) {
+    console.log('DRAGGING')
+    const { pos } = dragInfo
+    const deltaX = offsetX - pos.x
+    const deltaY = offsetY - pos.y
+
+    const newPos = { x: pos.x + deltaX, y: pos.y + deltaY }
+    const updatedShape = { ...selectedShape, ...newPos }
+
+    setSelectedShape(updatedShape)
+    setShapes(shapes.map(s => (s._id === updatedShape._id ? updatedShape : s)))
+    setDragInfo(prevInfo => ({ ...prevInfo, ...newPos }))
+  }
+
+  function handleEndDragging() {
+    console.log('END DRAGGING')
+    setDragInfo({ isDragging: false, pos: null })
   }
 
   return (
@@ -110,10 +136,10 @@ export function Canvas() {
         <canvas
           ref={canvasRef}
           className="canvas"
+          onClick={onCanvasClicked}
           onMouseDown={onStartDrawing}
           onMouseMove={onDrawing}
           onMouseUp={onEndDrawing}
-          onClick={onCanvasClicked}
         ></canvas>
       </div>
     </section>

@@ -12,12 +12,12 @@ export function useDrawingKit(canvasRef, contextRef) {
       ellipse: _drawEllipse,
     }
 
-    // If shape is of type string --> Generate and render new shape.
-    // Else --> Draw existing shape (represented as an object)
     let shapeToAdd
     if (typeof shape === 'string') {
+      // If shape is of type string --> Generate and render new shape.
       shapeToAdd = canvasService.getNewShape(shape, x, y)
     } else {
+      // Else --> Draw existing shape (represented as an object)
       shapeToAdd = { ...shape }
     }
 
@@ -25,6 +25,42 @@ export function useDrawingKit(canvasRef, contextRef) {
     shapesDrawingMap[shapeToAdd.type](shapeToAdd, x, y)
     contextRef.current.closePath()
     setPen(prevPen => ({ ...prevPen, isDrawing: false }))
+  }
+
+  function drawAllShapes() {
+    const shapesToRender = [...shapes]
+    // Clearing the shapes state for the functions to fill it when drawing
+    setShapes([])
+    resetStrokeStyle()
+    shapesToRender.forEach(shape => onDrawShape(shape, shape.x, shape.y))
+  }
+
+  function highlightSelectedShape(shape) {
+    const { type, x, y, width, height } = shape
+
+    contextRef.current.beginPath()
+    contextRef.current.setLineDash([10, 10])
+    contextRef.current.lineWidth = 2
+    contextRef.current.strokeStyle = 'black'
+
+    if (type === RECT) {
+      contextRef.current.strokeRect(x - 10, y - 10, width + 2 * 10, height + 2 * 10)
+    } else if (type === ELLIPSE) {
+      contextRef.current.ellipse(x, y, width + 10, height + 10, 0, 0, 2 * Math.PI)
+      contextRef.current.stroke()
+    }
+    contextRef.current.closePath()
+  }
+
+  function resetStrokeStyle() {
+    contextRef.current.setLineDash([])
+    contextRef.current.lineWidth = 1
+  }
+
+  function clearCanvas() {
+    const { width, height } = canvasRef.current
+    contextRef.current.clearRect(0, 0, width, height)
+    setShapes([])
   }
 
   function _drawLine(line) {
@@ -49,42 +85,15 @@ export function useDrawingKit(canvasRef, contextRef) {
     setShapes(prevShapes => [...prevShapes, ellipse])
   }
 
-  function highlightSelectedShape(shape) {
-    const { type, x, y, width, height } = shape
-
-    contextRef.current.beginPath()
-    contextRef.current.setLineDash([10, 10])
-    contextRef.current.lineWidth = 2
-    contextRef.current.strokeStyle = 'black'
-
-    if (type === RECT) {
-      contextRef.current.strokeRect(x - 10, y - 10, width + 2 * 10, height + 2 * 10)
-    } else if (type === ELLIPSE) {
-      contextRef.current.ellipse(x, y, width + 10, height + 10, 0, 0, 2 * Math.PI)
-      contextRef.current.stroke()
-    }
-    contextRef.current.closePath()
-  }
-
-  function resetContext() {
-    contextRef.current.setLineDash([])
-    contextRef.current.lineWidth = 1
-  }
-
-  function clearCanvas() {
-    const { width, height } = canvasRef.current
-    contextRef.current.clearRect(0, 0, width, height)
-    setShapes([])
-  }
-
   return {
     pen,
     setPen,
     shapes,
     setShapes,
     onDrawShape,
+    drawAllShapes,
     highlightSelectedShape,
-    resetContext,
+    resetStrokeStyle,
     clearCanvas,
   }
 }

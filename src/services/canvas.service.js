@@ -7,12 +7,13 @@ export const RECT = 'rect'
 const CANVAS_KEY = 'canvasDB'
 
 export const canvasService = {
-  getDefaultPen,
-  getNewShape,
-  getClickedShape,
-  getNewLine,
   getCanvas,
   saveCanvas,
+  getDefaultPen,
+  getNewShape,
+  findClickedShape,
+  getNewLine,
+  getDefaultDragInfo,
 }
 
 function getCanvas() {
@@ -54,7 +55,7 @@ function getNewLine(linePositions) {
   }
 }
 
-function getClickedShape(shapes, offsetX, offsetY) {
+function findClickedShape(shapes, offsetX, offsetY) {
   return shapes.find(shape => {
     const { x, y, width, height } = shape
 
@@ -63,4 +64,11 @@ function getClickedShape(shapes, offsetX, offsetY) {
 
     return isInXRange && isInYRange
   })
+}
+
+function getDefaultDragInfo() {
+  return {
+    isDragging: false,
+    pos: null,
+  }
 }
