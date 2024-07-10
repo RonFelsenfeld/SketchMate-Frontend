@@ -1,0 +1,19 @@
+/* eslint-disable react/prop-types */
+import { ELLIPSE, RECT } from '../../services/canvas.service'
+
+export function CanvasControls({ setPen }) {
+  function onSetShape(shape) {
+    setPen(prevPen => ({ ...prevPen, shape }))
+  }
+
+  return (
+    <section className="canvas-controls">
+      <button className="btn-shape" onClick={() => onSetShape(RECT)}>
+        Square
+      </button>
+      <button className="btn-shape" onClick={() => onSetShape(ELLIPSE)}>
+        Ellipse
+      </button>
+    </section>
+  )
+}
