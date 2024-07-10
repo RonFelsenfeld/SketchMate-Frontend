@@ -1,8 +1,21 @@
-import { NavLink } from 'react-router-dom'
+import { useRef } from 'react'
+import { useNavigate } from 'react-router'
+import { utilService } from '../services/util.service'
 
 export function HomePage() {
+  const homePageRef = useRef(null)
+  const navigate = useNavigate()
+
+  function onGetStarted() {
+    utilService.animateCSS(homePageRef.current, 'slideOutLeft')
+    setTimeout(() => navigate('/canvas'), 450)
+  }
+
   return (
-    <section className="home-page flex column align-center justify-center">
+    <section
+      ref={homePageRef}
+      className="home-page flex column align-center justify-center animate__animated animate__slideInLeft"
+    >
       <div className="heading-container flex column align-center">
         <h1 className="main-heading">
           Welcome to
@@ -19,9 +32,9 @@ export function HomePage() {
         </h3>
       </div>
 
-      <NavLink to={'/canvas'}>
-        <button className="btn-cta">Get Started</button>
-      </NavLink>
+      <button className="btn-cta" onClick={onGetStarted}>
+        Get Started
+      </button>
     </section>
   )
 }

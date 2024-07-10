@@ -3,6 +3,7 @@ export const utilService = {
   saveToStorage,
   loadFromStorage,
   greetBasedOnHour,
+  animateCSS,
 }
 
 function makeId(length = 6) {
@@ -37,4 +38,20 @@ function greetBasedOnHour() {
   } else {
     return 'Good night, guest!'
   }
+}
+
+function animateCSS(el, animation = 'bounce') {
+  const prefix = 'animate__'
+  return new Promise(resolve => {
+    const animationName = `${prefix}${animation}`
+    el.classList.add(`${prefix}animated`, animationName)
+
+    el.addEventListener('animationend', handleAnimationEnd, { once: true })
+
+    function handleAnimationEnd(event) {
+      event.stopPropagation()
+      // el.classList.remove(`${prefix}animated`, animationName)
+      resolve('Animation ended')
+    }
+  })
 }
