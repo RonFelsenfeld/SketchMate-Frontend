@@ -3,6 +3,10 @@
 }
 
 html {
+  font-size: 0.625rem; // Setting the root font size to 10px
+  font-family: $main-font-family, sans-serif;
+  background-color: $surface-clr;
+  color: $main-font-clr;
 }
 
 body,
