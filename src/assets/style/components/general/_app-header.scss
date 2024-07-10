@@ -1,0 +1,13 @@
+.app-header {
+  height: $app-header-height;
+  padding-inline: calc((100vw - $canvas-container-width) / 2);
+
+  .logo {
+    font-size: em(32px);
+    font-family: $heading-font-family;
+  }
+
+  .greeting-msg {
+    font-size: em(18px);
+  }
+}
