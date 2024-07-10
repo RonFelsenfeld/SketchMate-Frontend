@@ -6,13 +6,26 @@ export function CanvasControls({ setPen }) {
     setPen(prevPen => ({ ...prevPen, shape }))
   }
 
+  function onSetSize(diff) {
+    console.log(diff)
+  }
+
   return (
     <section className="canvas-controls">
       <button className="btn-shape" onClick={() => onSetShape(RECT)}>
         Square
       </button>
+
       <button className="btn-shape" onClick={() => onSetShape(ELLIPSE)}>
         Ellipse
+      </button>
+
+      <button className="btn-size" onClick={() => onSetSize(1)}>
+        +
+      </button>
+
+      <button className="btn-size" onClick={() => onSetSize(-1)}>
+        -
       </button>
     </section>
   )

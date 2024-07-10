@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState } from 'react'
 import { canvasService, ELLIPSE, LINE, RECT } from '../../services/canvas.service'
 import { CanvasControls } from './CanvasControls'
 
 export function Canvas() {
   const [pen, setPen] = useState(canvasService.getDefaultPen())
+  const [shapes, setShapes] = useState([])
   const canvasContainerRef = useRef(null)
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
@@ -24,7 +26,8 @@ export function Canvas() {
 
   function onDrawing({ nativeEvent }) {
     const { isDrawing, shape } = pen
-    if (!isDrawing) return
+    // todo: enable unlimited drawing shapes?
+    if (!isDrawing || shape !== LINE) return
 
     const { offsetX, offsetY } = nativeEvent
     if (shape === LINE) {
@@ -56,18 +59,35 @@ export function Canvas() {
     setPen(prevPen => ({ ...prevPen, isDrawing: false }))
   }
 
+  function onCanvasClicked({ nativeEvent }) {
+    const { offsetX, offsetY } = nativeEvent
+    const clickedShape = canvasService.getClickedShape(shapes, offsetX, offsetY)
+
+    if (clickedShape) {
+      console.log('clicked!')
+    } else {
+      onAddShape(pen.shape, offsetX, offsetY)
+    }
+  }
+
   function resizeCanvas(canvasEl) {
     canvasEl.width = canvasContainerRef.current.clientWidth
     canvasEl.height = canvasContainerRef.current.clientHeight
   }
 
   function drawRect(x, y) {
-    contextRef.current.strokeRect(x, y, 30, 30)
+    const rect = canvasService.generateShape(RECT, x, y)
+    const { width, height } = rect
+    contextRef.current.strokeRect(x, y, width, height)
+    setShapes(prevShapes => [...prevShapes, rect])
   }
 
   function drawEllipse(x, y) {
-    contextRef.current.ellipse(x, y, 20, 30, 0, 0, 2 * Math.PI)
+    const ellipse = canvasService.generateShape(ELLIPSE, x, y)
+    const { width, height } = ellipse
+    contextRef.current.ellipse(x, y, width, height, 0, 0, 2 * Math.PI)
     contextRef.current.stroke()
+    setShapes(prevShapes => [...prevShapes, ellipse])
   }
 
   return (
@@ -81,9 +101,7 @@ export function Canvas() {
           onMouseDown={onStartDrawing}
           onMouseMove={onDrawing}
           onMouseUp={onEndDrawing}
-          onClick={({ nativeEvent }) => {
-            onAddShape(pen.shape, nativeEvent.offsetX, nativeEvent.offsetY)
-          }}
+          onClick={onCanvasClicked}
         ></canvas>
       </div>
     </section>
