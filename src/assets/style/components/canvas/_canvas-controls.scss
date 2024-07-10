@@ -5,24 +5,39 @@
   align-items: stretch;
   gap: 10px;
 
-  padding: 10px 15px;
+  padding: 20px 40px;
   border: 1px solid $controls-border-clr;
   border-radius: $controls-border-radius;
 
   background-color: $main-theme-clr;
-  transform: translate(-50%, 0);
+  transform: translate(-50%, -50%);
   box-shadow: $controls-shadow;
+  transition: gap 0.3s;
+
+  &:hover {
+    gap: 15px;
+
+    .btn {
+      &:has(+ .btn:not(.btn-remove):hover):not(.btn-remove) {
+        @include hoveredBtn(1.15, $main-theme-clr-5);
+      }
+
+      &:hover:not(.btn-remove) {
+        @include hoveredBtn(1.3, $main-theme-clr-20);
+
+        & + .btn:not(.btn-remove) {
+          @include hoveredBtn(1.15, $main-theme-clr-5);
+        }
+      }
+    }
+  }
 
   .btn {
+    @include controlBtn;
     width: em(32px);
     height: em(32px);
-    border-radius: $controls-border-radius;
-    transition: all 0.3s;
 
-    &:hover {
-      background-color: #d5d5d5;
-      scale: 1.05;
-    }
+    background-color: $control-btn-bg-clr;
 
     &::before {
       font-size: em(14px);
@@ -31,7 +46,7 @@
 
     &.btn-pen {
       &::before {
-        content: '\f304';
+        content: '\f1fc';
       }
     }
 
@@ -43,6 +58,8 @@
       }
 
       &.ellipse {
+        margin-inline-end: $controls-sections-gap;
+
         &::before {
           content: '\f111';
         }
@@ -57,22 +74,96 @@
       }
 
       &.minus {
+        margin-inline-end: $controls-sections-gap;
+
         &::before {
           content: '\f068';
         }
       }
     }
 
+    &.btn-color {
+      position: relative;
+      padding: 0;
+
+      label {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        cursor: pointer;
+
+        &::before {
+          content: '\f55d';
+
+          position: absolute;
+          top: 50%;
+          left: 50%;
+
+          font-size: em(14px);
+          font-family: faSolid;
+          transform: translate(-50%, -50%);
+        }
+      }
+
+      input {
+        position: absolute;
+        top: 50%;
+
+        opacity: 0;
+        z-index: -1;
+      }
+
+      &.brush {
+        label {
+          &::before {
+            content: '\f55d';
+          }
+        }
+      }
+
+      &.fill {
+        margin-inline-end: $controls-sections-gap;
+
+        label {
+          &::before {
+            content: '\f575';
+          }
+        }
+      }
+    }
+
     &.btn-remove {
+      background-color: $remove-btn-bg-clr;
+
       &::before {
+        color: $secondary-font-clr;
         content: '\f1f8';
       }
+
+      &:hover {
+        background-color: darken($remove-btn-bg-clr, 20%);
+      }
+    }
+
+    &.selected {
+      background-color: $secondary-font-clr;
+      border-width: 2px;
+      // box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 1px 2px rgba(0, 0, 0, 0.1);
+      box-shadow: $selected-btn-shadow;
     }
   }
 
   .btn-clear {
-    padding-inline: rem(20px);
-    border-radius: $controls-border-radius;
+    @include controlBtn;
+
+    padding-inline: rem(30px);
     font-size: em(16px);
+    color: $secondary-font-clr;
+    background-color: $main-font-clr;
+
+    &:hover {
+      background-color: lighten($main-font-clr, 10%);
+    }
   }
 }

@@ -29,7 +29,8 @@ function saveCanvas(shapes) {
 
 function getDefaultPen() {
   return {
-    color: '#000',
+    strokeColor: '#000000',
+    fillColor: '#000000',
     shape: LINE,
     linePositions: [],
     isDrawing: false,

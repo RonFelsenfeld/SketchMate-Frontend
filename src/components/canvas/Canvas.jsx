@@ -87,7 +87,7 @@ export function Canvas() {
     contextRef.current.closePath()
     if (pen.shape !== LINE) return
 
-    const newLine = canvasService.getNewLine(pen.linePositions)
+    const newLine = canvasService.getNewLine(pen.linePositions, pen.strokeColor)
     setPen(prevPen => ({ ...prevPen, linePositions: [], isDrawing: false }))
     setShapes(prevShapes => [...prevShapes, newLine])
   }
@@ -128,6 +128,7 @@ export function Canvas() {
   return (
     <section className="canvas-section">
       <CanvasControls
+        pen={pen}
         setPen={setPen}
         shapes={shapes}
         setShapes={setShapes}

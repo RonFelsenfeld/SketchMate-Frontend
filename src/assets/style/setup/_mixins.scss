@@ -34,3 +34,19 @@
     color: $main-theme-clr;
   }
 }
+
+@mixin controlBtn {
+  border: 1px solid $control-btn-border-clr;
+  border-radius: $controls-border-radius;
+  transition: all 0.3s ease;
+
+  &:active {
+    scale: 0.9;
+  }
+}
+
+@mixin hoveredBtn($scale, $bgc) {
+  transform-origin: 50% 100%;
+  transform: scale($scale) translateY(-1px);
+  background-color: $bgc;
+}

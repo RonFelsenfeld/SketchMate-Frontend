@@ -8,16 +8,24 @@ $heading-font-family: MontserratBold;
 
 $app-header-height: 50px;
 $canvas-container-width: 95vw;
+$controls-sections-gap: 15px;
 
-$main-theme-clr-10: #195f20;
-$main-theme-clr: #2d8936;
+$main-theme-clr-20: rgb(24, 90, 71);
+$main-theme-clr-10: rgb(73, 167, 140);
+$main-theme-clr-5: rgb(172, 240, 221);
+$main-theme-clr: rgb(91, 197, 167);
 
 $secondary-theme-clr: rgb(34, 88, 145);
 
+$control-btn-bg-clr: rgb(214, 214, 214);
+$remove-btn-bg-clr: rgb(253, 60, 60);
+
 $canvas-border-clr: rgb(102, 102, 102);
-$controls-border-clr: rgb(150, 150, 150);
+$controls-border-clr: rgb(72, 72, 72);
+$control-btn-border-clr: rgb(104, 104, 104);
 
 $controls-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.357);
+$selected-btn-shadow: 0px 3px 4px 1px rgba(85, 85, 85, 0.33);
 $controls-border-radius: 5px;
 
 $clr-success: rgb(152, 232, 152);

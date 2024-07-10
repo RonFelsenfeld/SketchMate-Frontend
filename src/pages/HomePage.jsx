@@ -21,7 +21,7 @@ export function HomePage() {
           Welcome to
           <span>
             <span className="logo">
-              &nbsp;Sketch<span>M</span>ate
+              &nbsp;<span>S</span>ketch<span>M</span>ate
             </span>
           </span>
           &nbsp;- Your friendly companion for creative drawing.
