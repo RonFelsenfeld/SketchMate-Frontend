@@ -19,6 +19,7 @@ export function Canvas() {
     drawAllShapes,
     highlightSelectedShape,
     resetStrokeStyle,
+    removeShape,
     clearCanvas,
   } = useDrawingKit(canvasRef, contextRef)
 
@@ -96,14 +97,18 @@ export function Canvas() {
     canvasEl.height = canvasContainerRef.current.clientHeight
   }
 
+  function onRemoveShape() {
+    // todo: disable btn when has no selected shape
+    if (!selectedShape) return
+    removeShape(selectedShape)
+  }
+
   function handleStartDragging(shape, x, y) {
-    console.log('START DRAGGING')
     setSelectedShape(shape)
     setDragInfo({ isDragging: true, pos: { x, y } })
   }
 
   function handleDrag(offsetX, offsetY) {
-    console.log('DRAGGING')
     const { pos } = dragInfo
     const deltaX = offsetX - pos.x
     const deltaY = offsetY - pos.y
@@ -117,8 +122,7 @@ export function Canvas() {
   }
 
   function handleEndDragging() {
-    console.log('END DRAGGING')
-    setDragInfo({ isDragging: false, pos: null })
+    setDragInfo(canvasService.getDefaultDragInfo())
   }
 
   return (
@@ -129,6 +133,7 @@ export function Canvas() {
         setShapes={setShapes}
         selectedShape={selectedShape}
         setSelectedShape={setSelectedShape}
+        onRemoveShape={onRemoveShape}
         clearCanvas={clearCanvas}
       />
 

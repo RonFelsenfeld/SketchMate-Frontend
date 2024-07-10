@@ -27,12 +27,12 @@ export function useDrawingKit(canvasRef, contextRef) {
     setPen(prevPen => ({ ...prevPen, isDrawing: false }))
   }
 
-  function drawAllShapes() {
-    const shapesToRender = [...shapes]
+  function drawAllShapes(shapesToRender = shapes) {
+    const shapesToDraw = [...shapesToRender]
     // Clearing the shapes state for the functions to fill it when drawing
     setShapes([])
     resetStrokeStyle()
-    shapesToRender.forEach(shape => onDrawShape(shape, shape.x, shape.y))
+    shapesToDraw.forEach(shape => onDrawShape(shape, shape.x, shape.y))
   }
 
   function highlightSelectedShape(shape) {
@@ -55,6 +55,13 @@ export function useDrawingKit(canvasRef, contextRef) {
   function resetStrokeStyle() {
     contextRef.current.setLineDash([])
     contextRef.current.lineWidth = 1
+  }
+
+  function removeShape(shape) {
+    const updatedShapes = shapes.filter(s => s._id !== shape._id)
+    clearCanvas()
+    drawAllShapes(updatedShapes)
+    // setShapes(updatedShapes)
   }
 
   function clearCanvas() {
@@ -94,6 +101,7 @@ export function useDrawingKit(canvasRef, contextRef) {
     drawAllShapes,
     highlightSelectedShape,
     resetStrokeStyle,
+    removeShape,
     clearCanvas,
   }
 }

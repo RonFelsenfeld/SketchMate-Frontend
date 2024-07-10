@@ -6,6 +6,7 @@ export function CanvasControls({
   setShapes,
   selectedShape,
   setSelectedShape,
+  onRemoveShape,
   clearCanvas,
 }) {
   function onSetShape(shape) {
@@ -35,6 +36,8 @@ export function CanvasControls({
       <button className="btn btn-size plus" onClick={() => onSetSize(1)}></button>
 
       <button className="btn btn-size minus" onClick={() => onSetSize(-1)}></button>
+
+      <button className="btn btn-remove" onClick={onRemoveShape}></button>
 
       <button className="btn-clear" onClick={clearCanvas}>
         Clear

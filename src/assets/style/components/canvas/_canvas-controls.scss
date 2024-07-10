@@ -62,6 +62,12 @@
         }
       }
     }
+
+    &.btn-remove {
+      &::before {
+        content: '\f1f8';
+      }
+    }
   }
 
   .btn-clear {
