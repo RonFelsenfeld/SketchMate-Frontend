@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
+import { canvasService } from '../services/canvas.service'
 
 export function CanvasIndex() {
-  const [isDrawing, setIsDrawing] = useState(false)
+  const [pen, setPen] = useState(canvasService.getDefaultPen())
   const canvasContainerRef = useRef(null)
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
@@ -17,11 +18,11 @@ export function CanvasIndex() {
     const { offsetX, offsetY } = nativeEvent
     contextRef.current.beginPath()
     contextRef.current.moveTo(offsetX, offsetY)
-    setIsDrawing(true)
+    setPen(prevPen => ({ ...prevPen, isDrawing: true }))
   }
 
   function onDrawing({ nativeEvent }) {
-    if (!isDrawing) return
+    if (!pen.isDrawing) return
     const { offsetX, offsetY } = nativeEvent
     contextRef.current.lineTo(offsetX, offsetY)
     contextRef.current.stroke()
@@ -29,7 +30,7 @@ export function CanvasIndex() {
 
   function onEndDrawing() {
     contextRef.current.closePath()
-    setIsDrawing(false)
+    setPen(prevPen => ({ ...prevPen, isDrawing: false }))
   }
 
   function resizeCanvas(canvasEl) {
