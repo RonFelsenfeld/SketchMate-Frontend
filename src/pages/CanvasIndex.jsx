@@ -7,7 +7,7 @@ export function CanvasIndex() {
   useEffect
 
   return (
-    <section className="canvas-index flex column align-center animate__animated animate__slideInRight">
+    <section className="canvas-index flex column align-center justify-center animate__animated animate__slideInRight">
       <Canvas />
     </section>
   )
