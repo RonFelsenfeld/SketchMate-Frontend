@@ -69,17 +69,17 @@ export function Canvas() {
   }
 
   function onDrawing({ nativeEvent }) {
-    if (dragInfo.isDragging) {
-      const { x, y } = utilService.getEvPos(nativeEvent)
-      return handleDrag(x, y)
-    }
+    const { x, y } = utilService.getEvPos(nativeEvent)
+    if (dragInfo.isDragging) return handleDrag(x, y)
+
+    const hoveredShape = canvasService.findHoveredShape(shapes, x, y)
+    if (hoveredShape) utilService.addClassToElement(canvasContainerRef.current, 'hovering')
+    else utilService.removeClassFromElement(canvasContainerRef.current, 'hovering')
 
     const { isDrawing, shape } = pen
     if (!isDrawing || shape !== LINE) return
 
-    const { x, y } = utilService.getEvPos(nativeEvent)
     performLineDraw(x, y)
-
     const linePositions = [...pen.linePositions, { x, y }]
     setPen(prevPen => ({ ...prevPen, linePositions }))
   }
@@ -128,6 +128,12 @@ export function Canvas() {
     setDragInfo(canvasService.getDefaultDragInfo())
   }
 
+  function getClasses() {
+    if (dragInfo.isDragging) return 'dragging'
+    if (pen.shape !== LINE) return 'shape'
+    return ''
+  }
+
   return (
     <section className="canvas-section flex align-center">
       <CanvasControls
@@ -141,7 +147,7 @@ export function Canvas() {
         clearCanvas={clearCanvas}
       />
 
-      <div ref={canvasContainerRef} className="canvas-container">
+      <div ref={canvasContainerRef} className={`canvas-container  ${getClasses()}`}>
         <canvas
           ref={canvasRef}
           className="canvas"

@@ -5,6 +5,8 @@ export const utilService = {
   greetBasedOnHour,
   animateCSS,
   getEvPos,
+  addClassToElement,
+  removeClassFromElement,
 }
 
 function makeId(length = 6) {
@@ -79,4 +81,12 @@ function getEvPos(ev) {
   }
 
   return pos
+}
+
+function addClassToElement(el, className) {
+  if (el) el.classList.add(className)
+}
+
+function removeClassFromElement(el, className) {
+  if (el) el.classList.remove(className)
 }

@@ -14,6 +14,7 @@ export const canvasService = {
   getDefaultPen,
   getNewShape,
   findClickedShape,
+  findHoveredShape,
   getNewLine,
   getDefaultDragInfo,
 }
@@ -71,6 +72,10 @@ function findClickedShape(shapes, offsetX, offsetY) {
 
     return isInXRange && isInYRange
   })
+}
+
+function findHoveredShape(shapes, offsetX, offsetY) {
+  return findClickedShape(shapes, offsetX, offsetY)
 }
 
 function getDefaultDragInfo() {

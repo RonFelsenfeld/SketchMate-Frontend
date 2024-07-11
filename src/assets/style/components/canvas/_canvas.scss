@@ -7,5 +7,18 @@
 
     border: 2px solid $canvas-border-clr;
     background-color: white;
+    cursor: url(public/assets/img/brush-icon.png), auto;
+
+    &.shape {
+      cursor: cell;
+    }
+
+    &.hovering {
+      cursor: grab;
+    }
+
+    &.dragging {
+      cursor: grabbing;
+    }
   }
 }
