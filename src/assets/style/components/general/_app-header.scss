@@ -1,15 +1,15 @@
 .app-header {
   @include pageHeader;
 
-  .logo {
-    @include logo;
-  }
-
   .guest-container {
     gap: 15px;
 
     .greeting-msg {
       font-size: em(18px);
+
+      @include for-small-layout {
+        font-size: em(12px);
+      }
     }
   }
 }

@@ -5,8 +5,8 @@ export function DynamicTooltip() {
   const [tooltip, setTooltip] = useState(null)
 
   useEffect(() => {
-    // In mobile view --> disable tooltip
-    if (window.innerWidth < 600) return
+    // Disabling tooltip for mobile devices
+    if (window.innerWidth < 850) return
     const unsubscribe = eventBus.on(UPDATE_TOOLTIP, setTooltip)
     return unsubscribe
   }, [])

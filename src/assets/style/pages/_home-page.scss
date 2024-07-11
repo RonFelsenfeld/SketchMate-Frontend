@@ -40,11 +40,24 @@
         gap: 20px;
         text-align: center;
 
+        @include for-narrow-layout {
+          width: 100vw;
+          padding-inline: 20px;
+        }
+
         .main-heading {
           font-size: em(46px);
           font-family: $heading-font-family;
           line-height: 1em;
           letter-spacing: -0.2px;
+
+          @include for-small-layout {
+            font-size: em(36px);
+          }
+
+          @include for-small-layout {
+            font-size: em(28px);
+          }
 
           .logo {
             @include logo(1em);
@@ -54,6 +67,14 @@
         .secondary-heading {
           font-size: em(24px);
           line-height: 1.5em;
+
+          @include for-small-layout {
+            font-size: em(18px);
+          }
+
+          @include for-small-layout {
+            font-size: em(14px);
+          }
         }
       }
 

@@ -4,17 +4,17 @@
   }
 }
 
-// @mixin for-small-layout {
-//   @media (max-width: $break-small) {
-//     @content;
-//   }
-// }
+@mixin for-small-layout {
+  @media (max-width: $break-small) {
+    @content;
+  }
+}
 
-// @mixin for-mobile-layout {
-//   @media (max-width: $break-mobile) {
-//     @content;
-//   }
-// }
+@mixin for-mobile-layout {
+  @media (max-width: $break-mobile) {
+    @content;
+  }
+}
 
 @mixin fullPageDimensions {
   height: 100dvh;
@@ -70,6 +70,10 @@
 
   .logo {
     @include logo;
+
+    @include for-small-layout {
+      font-size: em(22px);
+    }
   }
 }
 
