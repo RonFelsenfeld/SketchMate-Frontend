@@ -13,6 +13,7 @@
   box-shadow: $controls-shadow;
   transform: translate(-50%, -50%);
   transition: background-color $theme-transition, gap 0.3s;
+
   cursor: default;
 
   @include for-narrow-layout {

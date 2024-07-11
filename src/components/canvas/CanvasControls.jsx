@@ -72,7 +72,7 @@ export function CanvasControls({
   return (
     <section
       ref={controlsRef}
-      className={`canvas-controls flex ${getThemeClass()} ${getIsDrawingClass()}`}
+      className={`canvas-controls flex animate__slower ${getThemeClass()} ${getIsDrawingClass()}`}
     >
       <button
         className={`btn btn-pen ${getSelectedClass(LINE)}`}
