@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
+
 import { canvasService, LINE } from '../../services/canvas.service'
+import { utilService } from '../../services/util.service'
+
 import { useDrawingKit } from '../../customHooks/useDrawingKit'
 import { CanvasControls } from './CanvasControls'
 
@@ -42,44 +45,43 @@ export function Canvas() {
     if (dragInfo.isDragging) return handleEndDragging()
     setSelectedShape(null)
 
-    const { offsetX, offsetY } = nativeEvent
-    const clickedShape = canvasService.findClickedShape(shapes, offsetX, offsetY)
+    const { x, y } = utilService.getEvPos(nativeEvent)
+    const clickedShape = canvasService.findClickedShape(shapes, x, y)
 
     if (clickedShape) {
       setSelectedShape(clickedShape)
     } else if (pen.shape !== LINE) {
-      onDrawShape(pen.shape, offsetX, offsetY)
+      onDrawShape(pen.shape, x, y)
     }
   }
 
   function onStartDrawing({ nativeEvent }) {
-    const { offsetX, offsetY } = nativeEvent
-    const clickedShape = canvasService.findClickedShape(shapes, offsetX, offsetY)
-    if (clickedShape) return handleStartDragging(clickedShape, offsetX, offsetY)
+    const { x, y } = utilService.getEvPos(nativeEvent)
+    const clickedShape = canvasService.findClickedShape(shapes, x, y)
+    if (clickedShape) return handleStartDragging(clickedShape, x, y)
 
-    contextRef.current.moveTo(offsetX, offsetY)
+    contextRef.current.moveTo(x, y)
     contextRef.current.beginPath()
 
     resetStrokeStyle()
-    const pos = { x: offsetX, y: offsetY }
+    const pos = { x, y }
     setPen(prevPen => ({ ...prevPen, linePositions: [pos], isDrawing: true }))
   }
 
   function onDrawing({ nativeEvent }) {
-    const { offsetX, offsetY } = nativeEvent
-    if (dragInfo.isDragging) return handleDrag(offsetX, offsetY)
+    if (dragInfo.isDragging) {
+      const { x, y } = utilService.getEvPos(nativeEvent)
+      return handleDrag(x, y)
+    }
 
     const { isDrawing, shape } = pen
     if (!isDrawing || shape !== LINE) return
-    // todo: allow unlimited drawing shapes?
 
-    if (shape === LINE) {
-      performLineDraw(offsetX, offsetY)
-      const linePositions = [...pen.linePositions, { x: offsetX, y: offsetY }]
-      setPen(prevPen => ({ ...prevPen, linePositions }))
-    } else {
-      onDrawShape(shape, offsetX, offsetY)
-    }
+    const { x, y } = utilService.getEvPos(nativeEvent)
+    performLineDraw(x, y)
+
+    const linePositions = [...pen.linePositions, { x, y }]
+    setPen(prevPen => ({ ...prevPen, linePositions }))
   }
 
   function onEndDrawing() {
@@ -106,6 +108,7 @@ export function Canvas() {
   function handleStartDragging(shape, x, y) {
     setSelectedShape(shape)
     setDragInfo({ isDragging: true, pos: { x, y } })
+    setPen(prevPen => ({ ...prevPen, isDrawing: false }))
   }
 
   function handleDrag(offsetX, offsetY) {

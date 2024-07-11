@@ -4,6 +4,7 @@ export const utilService = {
   loadFromStorage,
   greetBasedOnHour,
   animateCSS,
+  getEvPos,
 }
 
 function makeId(length = 6) {
@@ -56,4 +57,26 @@ function animateCSS(el, animation = 'bounce') {
       resolve('Animation ended')
     }
   })
+}
+
+// Calculates event position (support touch event - preciser pos)
+function getEvPos(ev) {
+  const TOUCH_EVENTS = ['touchstart', 'touchmove', 'touchend']
+
+  let pos = {
+    x: ev.offsetX,
+    y: ev.offsetY,
+  }
+
+  if (TOUCH_EVENTS.includes(ev.type)) {
+    ev.preventDefault()
+    ev = ev.changedTouches[0]
+
+    pos = {
+      x: ev.pageX - ev.target.offsetLeft - ev.target.clientLeft,
+      y: ev.pageY - ev.target.offsetTop - ev.target.clientTop,
+    }
+  }
+
+  return pos
 }
