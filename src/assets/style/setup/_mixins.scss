@@ -44,6 +44,11 @@
   &:active {
     scale: 0.95;
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    scale: (0.9);
+  }
 }
 
 @mixin hoveredBtn($scale, $bgc) {

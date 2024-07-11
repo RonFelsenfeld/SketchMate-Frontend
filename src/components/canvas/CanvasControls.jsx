@@ -16,7 +16,6 @@ export function CanvasControls({
   }
 
   function onSetSize(diff) {
-    // todo: disable btns when has no selected shape
     if (!selectedShape) return
 
     const width = selectedShape.width + diff
@@ -37,7 +36,6 @@ export function CanvasControls({
   }
 
   function onRotateShape(angleDiff) {
-    // todo: disable btn when has no selected shape
     if (!selectedShape) return
 
     const newAngle = selectedShape.angle + angleDiff
@@ -83,6 +81,7 @@ export function CanvasControls({
         onClick={() => onSetSize(1)}
         onMouseEnter={ev => showTooltip(ev.currentTarget, 'Increase Size')}
         onMouseLeave={hideTooltip}
+        disabled={!selectedShape}
       ></button>
 
       <button
@@ -90,6 +89,7 @@ export function CanvasControls({
         onClick={() => onSetSize(-1)}
         onMouseEnter={ev => showTooltip(ev.currentTarget, 'Decrease Size')}
         onMouseLeave={hideTooltip}
+        disabled={!selectedShape}
       ></button>
 
       <button
@@ -97,6 +97,7 @@ export function CanvasControls({
         onClick={() => onRotateShape(ROTATE_ANGLE)}
         onMouseEnter={ev => showTooltip(ev.currentTarget, 'Rotate Right')}
         onMouseLeave={hideTooltip}
+        disabled={!selectedShape}
       ></button>
 
       <button
@@ -104,6 +105,7 @@ export function CanvasControls({
         onClick={() => onRotateShape(-ROTATE_ANGLE)}
         onMouseEnter={ev => showTooltip(ev.currentTarget, 'Rotate Left')}
         onMouseLeave={hideTooltip}
+        disabled={!selectedShape}
       ></button>
 
       <button
@@ -141,6 +143,7 @@ export function CanvasControls({
         onClick={onRemoveShape}
         onMouseEnter={ev => showTooltip(ev.currentTarget, 'Erase Shape')}
         onMouseLeave={hideTooltip}
+        disabled={!selectedShape}
       ></button>
 
       <button
