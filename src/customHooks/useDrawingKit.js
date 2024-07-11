@@ -37,7 +37,7 @@ export function useDrawingKit(canvasRef, contextRef) {
   }
 
   function highlightSelectedShape(shape) {
-    const { type, angle } = shape
+    const { _id, type, angle } = shape
     const highlightDrawingMap = {
       rect: _performRectDraw,
       ellipse: _performEllipseDraw,
@@ -49,8 +49,8 @@ export function useDrawingKit(canvasRef, contextRef) {
     contextRef.current.lineWidth = 4
     contextRef.current.strokeStyle = '#ead940'
 
-    if (angle) _rotateShape(shape)
-    else highlightDrawingMap[type](shape, true)
+    if (angle) _rotateShape(shape, _id)
+    else highlightDrawingMap[type](shape, _id)
 
     contextRef.current.closePath()
     contextRef.current.restore()
@@ -74,8 +74,8 @@ export function useDrawingKit(canvasRef, contextRef) {
   }
 
   function _processLine(line) {
-    const { positions } = line
-    positions.forEach(({ x, y }) => performLineDraw(x, y))
+    const { positions, strokeColor } = line
+    positions.forEach(({ x, y }) => performLineDraw(x, y, strokeColor))
     setShapes(prevShapes => [...prevShapes, line])
   }
 
@@ -97,7 +97,8 @@ export function useDrawingKit(canvasRef, contextRef) {
     setShapes(prevShapes => [...prevShapes, ellipse])
   }
 
-  function _rotateShape({ type, x, y, width, height, angle }) {
+  function _rotateShape(shape, selectedShapeId = '') {
+    const { type, x, y, width, height, angle } = shape
     contextRef.current.save()
 
     // Calculating the center point to rotate around
@@ -109,26 +110,30 @@ export function useDrawingKit(canvasRef, contextRef) {
     contextRef.current.rotate((angle * Math.PI) / 180)
     contextRef.current.translate(-horizontalCenter, -verticalCenter)
 
-    if (type === RECT) _performRectDraw(x, y, width, height)
-    else if (type === ELLIPSE) _performEllipseDraw(x, y, width, height)
+    if (type === RECT) _performRectDraw(shape, selectedShapeId)
+    else if (type === ELLIPSE) _performEllipseDraw(shape, selectedShapeId)
 
     contextRef.current.restore()
   }
 
-  function performLineDraw(x, y) {
+  function performLineDraw(x, y, color = pen.strokeColor) {
+    contextRef.current.strokeStyle = color
     contextRef.current.lineTo(x, y)
     contextRef.current.stroke()
   }
 
-  function _performRectDraw({ x, y, width, height }, isHighlight = false) {
+  // ! if selectedShape is the "drawn" shape, don't fill it with the pen fill color
+  function _performRectDraw({ _id, x, y, width, height }, selectedShapeId = '') {
     contextRef.current.strokeRect(x, y, width, height)
-    if (!isHighlight) contextRef.current.fillRect(x, y, width, height)
+    if (_id !== selectedShapeId) {
+      contextRef.current.fillRect(x, y, width, height)
+    }
   }
 
-  function _performEllipseDraw({ x, y, width, height }, isHighlight = false) {
+  function _performEllipseDraw({ _id, x, y, width, height }, selectedShapeId = '') {
     contextRef.current.ellipse(x, y, width, height, 0, 0, 2 * Math.PI)
     contextRef.current.stroke()
-    if (!isHighlight) contextRef.current.fill()
+    if (_id !== selectedShapeId) contextRef.current.fill()
   }
 
   return {
