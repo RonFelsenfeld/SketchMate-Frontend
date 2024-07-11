@@ -44,10 +44,9 @@ export function useDrawingKit(canvasRef, contextRef) {
     contextRef.current.strokeStyle = 'black'
 
     if (type === RECT) {
-      contextRef.current.strokeRect(x - 10, y - 10, width + 2 * 10, height + 2 * 10)
+      _performRectDraw(x - 10, y - 10, width + 2 * 10, height + 2 * 10)
     } else if (type === ELLIPSE) {
-      contextRef.current.ellipse(x, y, width + 10, height + 10, 0, 0, 2 * Math.PI)
-      contextRef.current.stroke()
+      _performEllipseDraw(x, y, width + 10, height + 10)
     }
     contextRef.current.closePath()
   }
@@ -82,7 +81,7 @@ export function useDrawingKit(canvasRef, contextRef) {
     const { width, height, angle } = rect
 
     if (angle) _rotateShape(rect)
-    else contextRef.current.strokeRect(x, y, width, height)
+    else _performRectDraw(x, y, width, height)
 
     setShapes(prevShapes => [...prevShapes, rect])
   }
@@ -108,13 +107,14 @@ export function useDrawingKit(canvasRef, contextRef) {
     contextRef.current.rotate((angle * Math.PI) / 180)
     contextRef.current.translate(-horizontalCenter, -verticalCenter)
 
-    if (type === RECT) {
-      contextRef.current.strokeRect(x, y, width, height)
-    } else if (type === ELLIPSE) {
-      _performEllipseDraw(x, y, width, height)
-    }
+    if (type === RECT) _performRectDraw(x, y, width, height)
+    else if (type === ELLIPSE) _performEllipseDraw(x, y, width, height)
 
     contextRef.current.restore()
+  }
+
+  function _performRectDraw(x, y, width, height) {
+    contextRef.current.strokeRect(x, y, width, height)
   }
 
   function _performEllipseDraw(x, y, width, height) {
