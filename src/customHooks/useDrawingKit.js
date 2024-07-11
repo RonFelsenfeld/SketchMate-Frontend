@@ -7,9 +7,9 @@ export function useDrawingKit(canvasRef, contextRef) {
 
   function onDrawShape(shape, x, y) {
     const shapesDrawingMap = {
-      line: _drawLine,
-      rect: _drawRect,
-      ellipse: _drawEllipse,
+      line: _processLine,
+      rect: _processRect,
+      ellipse: _processEllipse,
     }
 
     let shapeToAdd
@@ -37,21 +37,19 @@ export function useDrawingKit(canvasRef, contextRef) {
 
   function highlightSelectedShape(shape) {
     const { type, x, y, width, height, angle } = shape
+    const highlightDrawingMap = {
+      rect: _performRectDraw,
+      ellipse: _performEllipseDraw,
+    }
 
     contextRef.current.save()
     contextRef.current.beginPath()
-
     contextRef.current.setLineDash([5, 5])
     contextRef.current.lineWidth = 4
     contextRef.current.strokeStyle = '#ead940'
 
-    if (angle) {
-      _rotateShape(shape)
-    } else if (type === RECT) {
-      _performRectDraw(x, y, width, height)
-    } else if (type === ELLIPSE) {
-      _performEllipseDraw(x, y, width, height)
-    }
+    if (angle) _rotateShape(shape)
+    else highlightDrawingMap[type](x, y, width, height)
 
     contextRef.current.closePath()
     contextRef.current.restore()
@@ -74,7 +72,7 @@ export function useDrawingKit(canvasRef, contextRef) {
     setShapes([])
   }
 
-  function _drawLine(line) {
+  function _processLine(line) {
     const { positions } = line
     positions.forEach(pos => {
       contextRef.current.lineTo(pos.x, pos.y)
@@ -83,7 +81,7 @@ export function useDrawingKit(canvasRef, contextRef) {
     setShapes(prevShapes => [...prevShapes, line])
   }
 
-  function _drawRect(rect, x, y) {
+  function _processRect(rect, x, y) {
     const { width, height, angle } = rect
 
     if (angle) _rotateShape(rect)
@@ -92,7 +90,7 @@ export function useDrawingKit(canvasRef, contextRef) {
     setShapes(prevShapes => [...prevShapes, rect])
   }
 
-  function _drawEllipse(ellipse, x, y) {
+  function _processEllipse(ellipse, x, y) {
     const { width, height, angle } = ellipse
 
     if (angle) _rotateShape(ellipse)

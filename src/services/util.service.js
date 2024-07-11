@@ -41,6 +41,8 @@ function greetBasedOnHour() {
 }
 
 function animateCSS(el, animation = 'bounce') {
+  if (!el) return
+
   const prefix = 'animate__'
   return new Promise(resolve => {
     const animationName = `${prefix}${animation}`

@@ -1,8 +1,9 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import { CanvasIndex } from './pages/CanvasIndex'
-import { AppHeader } from './components/general/AppHeader'
 import { HomePage } from './pages/HomePage'
+import { AppHeader } from './components/general/AppHeader'
+import { DynamicTooltip } from './components/general/DynamicTooltip'
 
 export function App() {
   return (
@@ -16,6 +17,8 @@ export function App() {
             <Route element={<CanvasIndex />} path="/canvas" />
           </Routes>
         </main>
+
+        <DynamicTooltip />
       </section>
     </Router>
   )

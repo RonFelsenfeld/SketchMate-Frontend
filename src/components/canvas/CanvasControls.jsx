@@ -1,4 +1,5 @@
 import { ELLIPSE, LINE, RECT, ROTATE_ANGLE } from '../../services/canvas.service'
+import { showTooltip, hideTooltip } from '../../services/event-bus.service'
 
 export function CanvasControls({
   pen,
@@ -52,27 +53,57 @@ export function CanvasControls({
       <button
         className={`btn btn-pen ${getSelectedClass(LINE)}`}
         onClick={() => onSetShape(LINE)}
+        onMouseEnter={ev => showTooltip(ev.currentTarget, 'Brush')}
+        onMouseLeave={hideTooltip}
       ></button>
 
       <button
         className={`btn btn-shape square ${getSelectedClass(RECT)}`}
         onClick={() => onSetShape(RECT)}
+        onMouseEnter={ev => showTooltip(ev.currentTarget, 'Square')}
+        onMouseLeave={hideTooltip}
       ></button>
 
       <button
         className={`btn btn-shape ellipse ${getSelectedClass(ELLIPSE)}`}
         onClick={() => onSetShape(ELLIPSE)}
+        onMouseEnter={ev => showTooltip(ev.currentTarget, 'Ellipse')}
+        onMouseLeave={hideTooltip}
       ></button>
 
-      <button className="btn btn-size plus" onClick={() => onSetSize(1)}></button>
+      <button
+        className="btn btn-size plus"
+        onClick={() => onSetSize(1)}
+        onMouseEnter={ev => showTooltip(ev.currentTarget, 'Increase Size')}
+        onMouseLeave={hideTooltip}
+      ></button>
 
-      <button className="btn btn-size minus" onClick={() => onSetSize(-1)}></button>
+      <button
+        className="btn btn-size minus"
+        onClick={() => onSetSize(-1)}
+        onMouseEnter={ev => showTooltip(ev.currentTarget, 'Decrease Size')}
+        onMouseLeave={hideTooltip}
+      ></button>
 
-      <button className="btn btn-rotate right" onClick={() => onRotateShape(ROTATE_ANGLE)}></button>
+      <button
+        className="btn btn-rotate right"
+        onClick={() => onRotateShape(ROTATE_ANGLE)}
+        onMouseEnter={ev => showTooltip(ev.currentTarget, 'Rotate Right')}
+        onMouseLeave={hideTooltip}
+      ></button>
 
-      <button className="btn btn-rotate left" onClick={() => onRotateShape(-ROTATE_ANGLE)}></button>
+      <button
+        className="btn btn-rotate left"
+        onClick={() => onRotateShape(-ROTATE_ANGLE)}
+        onMouseEnter={ev => showTooltip(ev.currentTarget, 'Rotate Left')}
+        onMouseLeave={hideTooltip}
+      ></button>
 
-      <button className="btn btn-color brush flex">
+      <button
+        className="btn btn-color brush flex"
+        onMouseEnter={ev => showTooltip(ev.currentTarget, 'Pick Stroke Color')}
+        onMouseLeave={hideTooltip}
+      >
         <label htmlFor="strokeColor" style={{ color: strokeColor }}></label>
         <input
           type="color"
@@ -83,7 +114,11 @@ export function CanvasControls({
         />
       </button>
 
-      <button className="btn btn-color fill flex">
+      <button
+        className="btn btn-color fill flex"
+        onMouseEnter={ev => showTooltip(ev.currentTarget, 'Pick Fill Color')}
+        onMouseLeave={hideTooltip}
+      >
         <label htmlFor="fillColor" style={{ color: fillColor }}></label>
         <input
           type="color"
@@ -94,9 +129,19 @@ export function CanvasControls({
         />
       </button>
 
-      <button className="btn btn-remove" onClick={onRemoveShape}></button>
+      <button
+        className="btn btn-remove"
+        onClick={onRemoveShape}
+        onMouseEnter={ev => showTooltip(ev.currentTarget, 'Erase Shape')}
+        onMouseLeave={hideTooltip}
+      ></button>
 
-      <button className="btn-clear" onClick={clearCanvas}>
+      <button
+        className="btn-clear"
+        onClick={clearCanvas}
+        onMouseEnter={ev => showTooltip(ev.currentTarget, 'Clear Canvas')}
+        onMouseLeave={hideTooltip}
+      >
         Clear
       </button>
     </section>
