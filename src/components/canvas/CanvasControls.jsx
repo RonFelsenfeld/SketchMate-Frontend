@@ -22,14 +22,18 @@ export function CanvasControls({
     const width = selectedShape.width + diff
     const height = selectedShape.height + diff
     const updatedShape = { ...selectedShape, width, height }
-
-    setSelectedShape(updatedShape)
-    setShapes(shapes.map(s => (s._id === updatedShape._id ? updatedShape : s)))
+    updateShapes(updatedShape)
   }
 
   function onSetColor({ target }) {
     const { value, name: field } = target
-    setPen(prevPen => ({ ...prevPen, [field]: value }))
+
+    if (selectedShape) {
+      const updatedShape = { ...selectedShape, [field]: value }
+      updateShapes(updatedShape)
+    } else {
+      setPen(prevPen => ({ ...prevPen, [field]: value }))
+    }
   }
 
   function onRotateShape(angleDiff) {
@@ -38,7 +42,10 @@ export function CanvasControls({
 
     const newAngle = selectedShape.angle + angleDiff
     const updatedShape = { ...selectedShape, angle: newAngle }
+    updateShapes(updatedShape)
+  }
 
+  function updateShapes(updatedShape) {
     setSelectedShape(updatedShape)
     setShapes(shapes.map(s => (s._id === updatedShape._id ? updatedShape : s)))
   }

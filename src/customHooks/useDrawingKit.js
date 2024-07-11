@@ -12,18 +12,19 @@ export function useDrawingKit(canvasRef, contextRef) {
       ellipse: _processEllipse,
     }
 
-    let shapeToAdd
-    if (typeof shape === 'string') {
-      // If shape is of type string --> Generate and draw new shape.
-      shapeToAdd = canvasService.getNewShape(shape, x, y)
-    } else {
-      // Else --> Draw existing shape (represented as an object)
-      shapeToAdd = { ...shape }
-    }
+    // If shape is of type string --> Generate and draw new shape.
+    // Else --> Draw existing shape (represented as an object)
+    const shapeToDraw =
+      typeof shape === 'string'
+        ? canvasService.getNewShape(shape, x, y, pen.strokeColor, pen.fillColor)
+        : { ...shape }
 
     contextRef.current.beginPath()
-    shapesDrawingMap[shapeToAdd.type](shapeToAdd, x, y)
+    contextRef.current.strokeStyle = shapeToDraw.strokeColor
+    contextRef.current.fillStyle = shapeToDraw.fillColor
+    shapesDrawingMap[shapeToDraw.type](shapeToDraw)
     contextRef.current.closePath()
+
     setPen(prevPen => ({ ...prevPen, isDrawing: false }))
   }
 
@@ -36,7 +37,7 @@ export function useDrawingKit(canvasRef, contextRef) {
   }
 
   function highlightSelectedShape(shape) {
-    const { type, x, y, width, height, angle } = shape
+    const { type, angle } = shape
     const highlightDrawingMap = {
       rect: _performRectDraw,
       ellipse: _performEllipseDraw,
@@ -44,12 +45,12 @@ export function useDrawingKit(canvasRef, contextRef) {
 
     contextRef.current.save()
     contextRef.current.beginPath()
-    contextRef.current.setLineDash([5, 5])
+    contextRef.current.setLineDash([8])
     contextRef.current.lineWidth = 4
     contextRef.current.strokeStyle = '#ead940'
 
     if (angle) _rotateShape(shape)
-    else highlightDrawingMap[type](x, y, width, height)
+    else highlightDrawingMap[type](shape, true)
 
     contextRef.current.closePath()
     contextRef.current.restore()
@@ -78,20 +79,20 @@ export function useDrawingKit(canvasRef, contextRef) {
     setShapes(prevShapes => [...prevShapes, line])
   }
 
-  function _processRect(rect, x, y) {
-    const { width, height, angle } = rect
+  function _processRect(rect) {
+    const { angle } = rect
 
     if (angle) _rotateShape(rect)
-    else _performRectDraw(x, y, width, height)
+    else _performRectDraw(rect)
 
     setShapes(prevShapes => [...prevShapes, rect])
   }
 
-  function _processEllipse(ellipse, x, y) {
-    const { width, height, angle } = ellipse
+  function _processEllipse(ellipse) {
+    const { angle } = ellipse
 
     if (angle) _rotateShape(ellipse)
-    else _performEllipseDraw(x, y, width, height)
+    else _performEllipseDraw(ellipse)
 
     setShapes(prevShapes => [...prevShapes, ellipse])
   }
@@ -119,13 +120,15 @@ export function useDrawingKit(canvasRef, contextRef) {
     contextRef.current.stroke()
   }
 
-  function _performRectDraw(x, y, width, height) {
+  function _performRectDraw({ x, y, width, height }, isHighlight = false) {
     contextRef.current.strokeRect(x, y, width, height)
+    if (!isHighlight) contextRef.current.fillRect(x, y, width, height)
   }
 
-  function _performEllipseDraw(x, y, width, height) {
+  function _performEllipseDraw({ x, y, width, height }, isHighlight = false) {
     contextRef.current.ellipse(x, y, width, height, 0, 0, 2 * Math.PI)
     contextRef.current.stroke()
+    if (!isHighlight) contextRef.current.fill()
   }
 
   return {

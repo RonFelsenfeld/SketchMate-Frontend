@@ -32,14 +32,14 @@ function saveCanvas(shapes) {
 function getDefaultPen() {
   return {
     strokeColor: '#000000',
-    fillColor: '#000000',
+    fillColor: '#ffffff',
     shape: LINE,
     linePositions: [],
     isDrawing: false,
   }
 }
 
-function getNewShape(shape, x, y) {
+function getNewShape(shape, x, y, strokeColor, fillColor) {
   return {
     _id: utilService.makeId(),
     type: shape,
@@ -48,6 +48,8 @@ function getNewShape(shape, x, y) {
     width: shape === RECT ? 40 : 30,
     height: 40,
     angle: 0,
+    strokeColor,
+    fillColor,
   }
 }
 
