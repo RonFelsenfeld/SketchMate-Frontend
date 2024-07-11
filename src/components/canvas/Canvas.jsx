@@ -33,6 +33,9 @@ export function Canvas() {
     const context = canvas.getContext('2d')
     contextRef.current = context
     resizeCanvas(canvas)
+
+    window.addEventListener('resize', resizeCanvas)
+    return () => window.removeEventListener('resize', resizeCanvas)
   }, [])
 
   useEffect(() => {

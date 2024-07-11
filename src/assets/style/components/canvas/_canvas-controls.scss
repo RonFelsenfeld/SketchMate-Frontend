@@ -14,6 +14,33 @@
   transform: translate(-50%, -50%);
   transition: background-color $theme-transition, gap 0.3s;
 
+  @include for-narrow-layout {
+    inset: 50% auto auto 0;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 20px 10px;
+    border-radius: 0px;
+    border-top-right-radius: $controls-border-radius;
+    border-bottom-right-radius: $controls-border-radius;
+
+    transition: background-color $theme-transition, gap 0.3s, padding-inline 0.3s;
+    transform: translate(0, -50%);
+
+    &:hover {
+      padding-inline-end: 30px;
+    }
+
+    .btn {
+      &:is(.btn-shape, .btn-size, .btn-rotate, .btn-color) {
+        &.gap {
+          margin-inline-end: 0;
+          margin-block-end: $controls-sections-gap;
+        }
+      }
+    }
+  }
+
   &.dark {
     background-color: $dark-theme-clr;
 
@@ -77,8 +104,6 @@
       }
 
       &.ellipse {
-        margin-inline-end: $controls-sections-gap;
-
         &::before {
           content: '\f111';
         }
@@ -93,8 +118,6 @@
       }
 
       &.minus {
-        margin-inline-end: $controls-sections-gap;
-
         &::before {
           content: '\f068';
         }
@@ -109,8 +132,6 @@
       }
 
       &.left {
-        margin-inline-end: $controls-sections-gap;
-
         &::before {
           content: '\f0e2';
         }
@@ -158,8 +179,6 @@
       }
 
       &.fill {
-        margin-inline-end: $controls-sections-gap;
-
         label {
           &::before {
             content: '\f575';
@@ -173,7 +192,7 @@
 
       &::before {
         color: $secondary-font-clr;
-        content: '\f1f8';
+        content: '\f12d';
       }
 
       &:hover {
@@ -181,23 +200,27 @@
       }
     }
 
+    &.btn-clear {
+      background-color: $main-font-clr;
+
+      &::before {
+        color: $secondary-font-clr;
+        content: '\f1f8';
+      }
+
+      &:hover {
+        background-color: lighten($main-font-clr, 10%);
+      }
+    }
+
+    &.gap {
+      margin-inline-end: $controls-sections-gap;
+    }
+
     &.selected {
       border-width: 2px;
       background-color: $secondary-font-clr;
       box-shadow: $selected-btn-shadow;
-    }
-  }
-
-  .btn-clear {
-    @include controlBtn;
-
-    padding-inline: rem(30px);
-    font-size: em(16px);
-    color: $secondary-font-clr;
-    background-color: $main-font-clr;
-
-    &:hover {
-      background-color: lighten($main-font-clr, 10%);
     }
   }
 }

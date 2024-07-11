@@ -12,6 +12,14 @@
     background-color: $canvas-bg-clr;
     cursor: url(public/assets/img/brush-icon.png), auto;
 
+    @include for-narrow-layout {
+      width: 100vw;
+      height: calc(100dvh - $app-header-height);
+      border: none;
+      border-block-start: 2px solid $canvas-border-clr;
+      border-inline-start: 2px solid $canvas-border-clr;
+    }
+
     &.shape {
       cursor: cell;
     }

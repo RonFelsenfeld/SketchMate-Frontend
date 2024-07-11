@@ -1,14 +1,8 @@
-// @mixin for-normal-layout {
-//   @media (max-width: $break-normal) {
-//     @content;
-//   }
-// }
-
-// @mixin for-narrow-layout {
-//   @media (max-width: $break-narrow) {
-//     @content;
-//   }
-// }
+@mixin for-narrow-layout {
+  @media (max-width: $break-narrow) {
+    @content;
+  }
+}
 
 // @mixin for-small-layout {
 //   @media (max-width: $break-small) {
@@ -56,6 +50,10 @@
   background-color: $bgc;
   transform-origin: 50% 100%;
   transform: scale($scale) translateY(-1px);
+
+  @include for-narrow-layout {
+    transform-origin: -100% 50%;
+  }
 }
 
 @mixin pageHeader {

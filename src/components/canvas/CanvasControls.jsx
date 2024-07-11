@@ -73,7 +73,7 @@ export function CanvasControls({
       ></button>
 
       <button
-        className={`btn btn-shape ellipse ${getSelectedClass(ELLIPSE)}`}
+        className={`btn btn-shape ellipse gap ${getSelectedClass(ELLIPSE)}`}
         onClick={() => onSetShape(ELLIPSE)}
         onMouseEnter={ev => showTooltip(ev.currentTarget, 'Ellipse')}
         onMouseLeave={hideTooltip}
@@ -88,7 +88,7 @@ export function CanvasControls({
       ></button>
 
       <button
-        className="btn btn-size minus"
+        className="btn btn-size minus gap"
         onClick={() => onSetSize(-1)}
         onMouseEnter={ev => showTooltip(ev.currentTarget, 'Decrease Size')}
         onMouseLeave={hideTooltip}
@@ -104,7 +104,7 @@ export function CanvasControls({
       ></button>
 
       <button
-        className="btn btn-rotate left"
+        className="btn btn-rotate left gap"
         onClick={() => onRotateShape(-ROTATE_ANGLE)}
         onMouseEnter={ev => showTooltip(ev.currentTarget, 'Rotate Left')}
         onMouseLeave={hideTooltip}
@@ -127,7 +127,7 @@ export function CanvasControls({
       </button>
 
       <button
-        className="btn btn-color fill flex"
+        className="btn btn-color fill gap flex"
         onMouseEnter={ev => showTooltip(ev.currentTarget, 'Pick Fill Color')}
         onMouseLeave={hideTooltip}
       >
@@ -150,14 +150,12 @@ export function CanvasControls({
       ></button>
 
       <button
-        className="btn-clear"
+        className="btn btn-clear"
         onClick={clearCanvas}
         onMouseEnter={ev => showTooltip(ev.currentTarget, 'Clear Canvas')}
         onMouseLeave={hideTooltip}
         disabled={!shapes.length}
-      >
-        Clear
-      </button>
+      ></button>
     </section>
   )
 }

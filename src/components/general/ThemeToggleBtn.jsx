@@ -8,7 +8,7 @@ export function ThemeToggleBtn() {
   }
 
   return (
-    <div className="btn-toggle-theme">
+    <div className="btn-toggle-theme" title={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}>
       <input
         type="checkbox"
         className="theme-input"
