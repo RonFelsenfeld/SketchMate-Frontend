@@ -45,6 +45,7 @@ function getNewShape(shape, x, y) {
     y,
     width: shape === RECT ? 30 : 20,
     height: 30,
+    angle: 0,
   }
 }
 

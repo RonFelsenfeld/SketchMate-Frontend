@@ -101,6 +101,7 @@ export function Canvas() {
     // todo: disable btn when has no selected shape
     if (!selectedShape) return
     removeShape(selectedShape)
+    setSelectedShape(null)
   }
 
   function handleStartDragging(shape, x, y) {

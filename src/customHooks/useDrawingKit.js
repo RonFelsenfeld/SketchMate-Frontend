@@ -61,7 +61,6 @@ export function useDrawingKit(canvasRef, contextRef) {
     const updatedShapes = shapes.filter(s => s._id !== shape._id)
     clearCanvas()
     drawAllShapes(updatedShapes)
-    // setShapes(updatedShapes)
   }
 
   function clearCanvas() {
@@ -80,16 +79,47 @@ export function useDrawingKit(canvasRef, contextRef) {
   }
 
   function _drawRect(rect, x, y) {
-    const { width, height } = rect
-    contextRef.current.strokeRect(x, y, width, height)
+    const { width, height, angle } = rect
+
+    if (angle) _rotateShape(rect)
+    else contextRef.current.strokeRect(x, y, width, height)
+
     setShapes(prevShapes => [...prevShapes, rect])
   }
 
   function _drawEllipse(ellipse, x, y) {
-    const { width, height } = ellipse
+    const { width, height, angle } = ellipse
+
+    if (angle) _rotateShape(ellipse)
+    else _performEllipseDraw(x, y, width, height)
+
+    setShapes(prevShapes => [...prevShapes, ellipse])
+  }
+
+  function _rotateShape({ type, x, y, width, height, angle }) {
+    contextRef.current.save()
+
+    // Calculating the center point to rotate around
+    const verticalCenter = y + height / 2
+    const horizontalCenter = x + width / 2
+
+    // Rotating the shape + Translating for around-center rotation
+    contextRef.current.translate(horizontalCenter, verticalCenter)
+    contextRef.current.rotate((angle * Math.PI) / 180)
+    contextRef.current.translate(-horizontalCenter, -verticalCenter)
+
+    if (type === RECT) {
+      contextRef.current.strokeRect(x, y, width, height)
+    } else if (type === ELLIPSE) {
+      _performEllipseDraw(x, y, width, height)
+    }
+
+    contextRef.current.restore()
+  }
+
+  function _performEllipseDraw(x, y, width, height) {
     contextRef.current.ellipse(x, y, width, height, 0, 0, 2 * Math.PI)
     contextRef.current.stroke()
-    setShapes(prevShapes => [...prevShapes, ellipse])
   }
 
   return {

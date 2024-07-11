@@ -31,6 +31,17 @@ export function CanvasControls({
     setPen(prevPen => ({ ...prevPen, [field]: value }))
   }
 
+  function onRotateShape(angleDiff) {
+    // todo: disable btn when has no selected shape
+    if (!selectedShape) return
+
+    const newAngle = selectedShape.angle + angleDiff
+    const updatedShape = { ...selectedShape, angle: newAngle }
+
+    setSelectedShape(updatedShape)
+    setShapes(shapes.map(s => (s._id === updatedShape._id ? updatedShape : s)))
+  }
+
   function getSelectedClass(shape) {
     return pen.shape === shape ? 'selected' : ''
   }
@@ -56,6 +67,10 @@ export function CanvasControls({
       <button className="btn btn-size plus" onClick={() => onSetSize(1)}></button>
 
       <button className="btn btn-size minus" onClick={() => onSetSize(-1)}></button>
+
+      <button className="btn btn-rotate right" onClick={() => onRotateShape(5)}></button>
+
+      <button className="btn btn-rotate left" onClick={() => onRotateShape(-5)}></button>
 
       <button className="btn btn-color brush flex">
         <label htmlFor="strokeColor" style={{ color: strokeColor }}></label>
