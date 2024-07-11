@@ -4,6 +4,8 @@ export const LINE = 'line'
 export const ELLIPSE = 'ellipse'
 export const RECT = 'rect'
 
+export const ROTATE_ANGLE = 5
+
 const CANVAS_KEY = 'canvasDB'
 
 export const canvasService = {
@@ -43,8 +45,8 @@ function getNewShape(shape, x, y) {
     type: shape,
     x,
     y,
-    width: shape === RECT ? 30 : 20,
-    height: 30,
+    width: shape === RECT ? 40 : 30,
+    height: 40,
     angle: 0,
   }
 }
@@ -73,4 +75,17 @@ function getDefaultDragInfo() {
     isDragging: false,
     pos: null,
   }
+}
+
+// Calculating new coords after rotate
+function rotatePoint(cx, cy, x, y, angle) {
+  const radians = (Math.PI / 180) * angle
+
+  const cos = Math.cos(radians)
+  const sin = Math.sin(radians)
+
+  const nx = cos * (x - cx) - sin * (y - cy) + cx
+  const ny = sin * (x - cx) + cos * (y - cy) + cy
+
+  return { x: nx, y: ny }
 }

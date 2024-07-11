@@ -1,4 +1,4 @@
-import { ELLIPSE, LINE, RECT } from '../../services/canvas.service'
+import { ELLIPSE, LINE, RECT, ROTATE_ANGLE } from '../../services/canvas.service'
 
 export function CanvasControls({
   pen,
@@ -68,9 +68,9 @@ export function CanvasControls({
 
       <button className="btn btn-size minus" onClick={() => onSetSize(-1)}></button>
 
-      <button className="btn btn-rotate right" onClick={() => onRotateShape(5)}></button>
+      <button className="btn btn-rotate right" onClick={() => onRotateShape(ROTATE_ANGLE)}></button>
 
-      <button className="btn btn-rotate left" onClick={() => onRotateShape(-5)}></button>
+      <button className="btn btn-rotate left" onClick={() => onRotateShape(-ROTATE_ANGLE)}></button>
 
       <button className="btn btn-color brush flex">
         <label htmlFor="strokeColor" style={{ color: strokeColor }}></label>

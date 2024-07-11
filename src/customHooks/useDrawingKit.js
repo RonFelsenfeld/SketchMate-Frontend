@@ -36,19 +36,25 @@ export function useDrawingKit(canvasRef, contextRef) {
   }
 
   function highlightSelectedShape(shape) {
-    const { type, x, y, width, height } = shape
+    const { type, x, y, width, height, angle } = shape
 
+    contextRef.current.save()
     contextRef.current.beginPath()
-    contextRef.current.setLineDash([10, 10])
-    contextRef.current.lineWidth = 2
-    contextRef.current.strokeStyle = 'black'
 
-    if (type === RECT) {
-      _performRectDraw(x - 10, y - 10, width + 2 * 10, height + 2 * 10)
+    contextRef.current.setLineDash([5, 5])
+    contextRef.current.lineWidth = 4
+    contextRef.current.strokeStyle = '#ead940'
+
+    if (angle) {
+      _rotateShape(shape)
+    } else if (type === RECT) {
+      _performRectDraw(x, y, width, height)
     } else if (type === ELLIPSE) {
-      _performEllipseDraw(x, y, width + 10, height + 10)
+      _performEllipseDraw(x, y, width, height)
     }
+
     contextRef.current.closePath()
+    contextRef.current.restore()
   }
 
   function resetStrokeStyle() {
