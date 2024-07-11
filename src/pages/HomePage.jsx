@@ -2,20 +2,22 @@ import { useRef } from 'react'
 import { useNavigate } from 'react-router'
 import { utilService } from '../services/util.service'
 import { AppHeader } from '../components/general/AppHeader'
+import { useTheme } from '../customHooks/useTheme'
 
 export function HomePage() {
   const homePageRef = useRef(null)
   const navigate = useNavigate()
+  const { getThemeClass } = useTheme()
 
   function onGetStarted() {
     utilService.animateCSS(homePageRef.current, 'slideOutLeft')
-    setTimeout(() => navigate('/canvas'), 600)
+    setTimeout(() => navigate('/canvas'), 800)
   }
 
   return (
     <section
       ref={homePageRef}
-      className="home-page flex column animate__animated animate__slideInLeft"
+      className={`home-page flex column animate__animated animate__slideInLeft ${getThemeClass()}`}
     >
       <AppHeader />
 
@@ -42,7 +44,7 @@ export function HomePage() {
           </button>
         </div>
 
-        <img src="/assets/img/hero-light.png" alt="Drawing studio" className="hero-img" />
+        <img src={`/assets/img/hero-light.png`} alt="Drawing studio" className="hero-img" />
       </section>
     </section>
   )

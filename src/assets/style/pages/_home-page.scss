@@ -2,6 +2,31 @@
   @include fullPageDimensions;
   background-color: $light-page-bg-clr;
   background: $light-page-gradient;
+  transition: all $theme-transition;
+
+  @include darkMode {
+    .hero-section {
+      .main-content {
+        .heading-container {
+          .main-heading {
+            .logo {
+              span {
+                color: $dark-theme-clr;
+              }
+            }
+          }
+        }
+
+        .btn-cta {
+          background-color: $dark-theme-clr;
+
+          &:hover {
+            background-color: $dark-theme-clr-10;
+          }
+        }
+      }
+    }
+  }
 
   .hero-section {
     flex-grow: 1;
@@ -40,7 +65,7 @@
         color: $secondary-font-clr;
 
         background-color: $main-theme-clr;
-        transition: background-color 0.3s;
+        transition: background-color $theme-transition;
 
         &:hover {
           background-color: $main-theme-clr-10;

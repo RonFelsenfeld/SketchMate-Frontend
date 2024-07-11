@@ -5,9 +5,6 @@
 html {
   font-size: 0.625rem; // Setting the root font size to 10px
   font-family: $main-font-family, sans-serif;
-  background-color: $light-page-bg-clr;
-  background: $light-page-gradient;
-  color: $main-font-clr;
 }
 
 body {
@@ -46,4 +43,15 @@ a {
 input,
 select {
   font-family: inherit;
+}
+
+.app {
+  @include darkMode {
+    background-color: $dark-page-bg-clr;
+    background: $dark-page-gradient;
+  }
+
+  background-color: $light-page-bg-clr;
+  background: $light-page-gradient;
+  color: $main-font-clr;
 }

@@ -1,6 +1,11 @@
 .canvas-index {
   @include fullPageDimensions;
-
   background-color: $light-page-bg-clr;
   background: $light-page-gradient;
+
+  @include darkMode {
+    .canvas-container {
+      border-width: 4px;
+    }
+  }
 }

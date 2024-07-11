@@ -1,5 +1,6 @@
 import { ELLIPSE, LINE, RECT, ROTATE_ANGLE } from '../../services/canvas.service'
 import { showTooltip, hideTooltip } from '../../services/event-bus.service'
+import { useTheme } from '../../customHooks/useTheme'
 
 export function CanvasControls({
   pen,
@@ -11,6 +12,8 @@ export function CanvasControls({
   onRemoveShape,
   clearCanvas,
 }) {
+  const { getThemeClass } = useTheme()
+
   function onSetShape(shape) {
     setPen(prevPen => ({ ...prevPen, shape }))
   }
@@ -54,7 +57,7 @@ export function CanvasControls({
 
   const { strokeColor, fillColor } = pen
   return (
-    <section className="canvas-controls flex">
+    <section className={`canvas-controls flex ${getThemeClass()}`}>
       <button
         className={`btn btn-pen ${getSelectedClass(LINE)}`}
         onClick={() => onSetShape(LINE)}
@@ -151,6 +154,7 @@ export function CanvasControls({
         onClick={clearCanvas}
         onMouseEnter={ev => showTooltip(ev.currentTarget, 'Clear Canvas')}
         onMouseLeave={hideTooltip}
+        disabled={!shapes.length}
       >
         Clear
       </button>

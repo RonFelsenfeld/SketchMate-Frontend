@@ -5,7 +5,11 @@
     @include logo;
   }
 
-  .greeting-msg {
-    font-size: em(18px);
+  .guest-container {
+    gap: 15px;
+
+    .greeting-msg {
+      font-size: em(18px);
+    }
   }
 }

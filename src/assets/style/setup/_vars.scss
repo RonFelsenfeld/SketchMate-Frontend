@@ -13,6 +13,11 @@ $main-theme-clr-10: rgb(73, 167, 140);
 $main-theme-clr-5: rgb(172, 240, 221);
 $main-theme-clr: rgb(91, 197, 167);
 
+$dark-theme-clr-20: rgb(12, 65, 122);
+$dark-theme-clr-10: rgb(39, 101, 169);
+$dark-theme-clr-5: rgb(133, 174, 219);
+$dark-theme-clr: rgb(75, 143, 215);
+
 $light-page-bg-clr: rgb(207, 255, 241);
 $light-page-gradient: linear-gradient(
   180deg,
@@ -22,10 +27,13 @@ $light-page-gradient: linear-gradient(
   rgba(79, 217, 176, 1) 94%
 );
 
-$secondary-theme-clr: rgb(34, 88, 145);
+$dark-page-bg-clr: rgb(19, 15, 64);
+$dark-page-gradient: linear-gradient(180deg, #130f40 0%, #000000 74%);
 
-$control-btn-bg-clr: rgb(215, 215, 215);
+$control-btn-bg-clr: rgb(230, 230, 230);
 $remove-btn-bg-clr: rgb(253, 60, 60);
+$theme-btn-light-clr: rgb(131, 213, 240);
+$theme-btn-dark-clr: rgb(99, 99, 99);
 
 $canvas-border-clr: rgb(102, 102, 102);
 $controls-border-clr: rgb(72, 72, 72);
@@ -35,6 +43,7 @@ $controls-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.357);
 $selected-btn-shadow: 0px 3px 4px 1px rgba(85, 85, 85, 0.33);
 $tooltip-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.2);
 $controls-border-radius: 5px;
+$theme-transition: 0.4s;
 
 $clr-success: rgb(152, 232, 152);
 $clr-error: rgb(243, 150, 150);

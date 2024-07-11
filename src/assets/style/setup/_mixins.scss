@@ -47,6 +47,7 @@
 
   &:disabled {
     cursor: not-allowed;
+    opacity: 0.5;
     scale: (0.9);
   }
 }
@@ -61,8 +62,47 @@
   height: $app-header-height;
   padding-inline: calc((100vw - $canvas-container-width) / 2);
   background-color: $light-page-bg-clr;
+  transition: background-color $theme-transition;
+
+  &.dark {
+    background-color: $dark-page-bg-clr;
+
+    .logo {
+      span {
+        color: $dark-theme-clr;
+      }
+    }
+  }
 
   .logo {
     @include logo;
+  }
+}
+
+@mixin darkMode {
+  position: relative;
+
+  // For transition the gradient background
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+
+    background: $dark-page-gradient;
+    background-color: $dark-page-bg-clr;
+
+    transition: opacity $theme-transition;
+    z-index: -1;
+    opacity: 0;
+  }
+
+  &.dark {
+    color: $secondary-font-clr;
+
+    &::before {
+      opacity: 1;
+    }
+
+    @content;
   }
 }

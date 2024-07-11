@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { canvasService, ELLIPSE, RECT } from '../services/canvas.service'
+import { useTheme } from './useTheme'
 
 export function useDrawingKit(canvasRef, contextRef) {
   const [pen, setPen] = useState(canvasService.getDefaultPen())
   const [shapes, setShapes] = useState([])
+  const { isDarkMode } = useTheme()
 
   function onDrawShape(shape, x, y) {
     const shapesDrawingMap = {
@@ -47,7 +49,7 @@ export function useDrawingKit(canvasRef, contextRef) {
     contextRef.current.beginPath()
     contextRef.current.setLineDash([8])
     contextRef.current.lineWidth = 4
-    contextRef.current.strokeStyle = '#ead940'
+    contextRef.current.strokeStyle = isDarkMode ? '#4b8fd7' : '#5bc5a7'
 
     if (angle) _rotateShape(shape, _id)
     else highlightDrawingMap[type](shape, _id)
