@@ -31,8 +31,8 @@
 }
 
 @mixin controlBtn {
-  width: em(32px);
-  height: em(32px);
+  width: em(36px);
+  height: em(36px);
 
   border: 1px solid $control-btn-border-clr;
   border-radius: $controls-border-radius;
@@ -48,7 +48,7 @@
     scale: (0.9);
   }
 
-  @include for-small-layout {
+  @include for-mobile-layout {
     width: em(28px);
     height: em(28px);
   }
