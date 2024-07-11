@@ -14,7 +14,7 @@ export function useDrawingKit(canvasRef, contextRef) {
 
     let shapeToAdd
     if (typeof shape === 'string') {
-      // If shape is of type string --> Generate and render new shape.
+      // If shape is of type string --> Generate and draw new shape.
       shapeToAdd = canvasService.getNewShape(shape, x, y)
     } else {
       // Else --> Draw existing shape (represented as an object)
@@ -74,10 +74,7 @@ export function useDrawingKit(canvasRef, contextRef) {
 
   function _processLine(line) {
     const { positions } = line
-    positions.forEach(pos => {
-      contextRef.current.lineTo(pos.x, pos.y)
-      contextRef.current.stroke()
-    })
+    positions.forEach(({ x, y }) => performLineDraw(x, y))
     setShapes(prevShapes => [...prevShapes, line])
   }
 
@@ -117,6 +114,11 @@ export function useDrawingKit(canvasRef, contextRef) {
     contextRef.current.restore()
   }
 
+  function performLineDraw(x, y) {
+    contextRef.current.lineTo(x, y)
+    contextRef.current.stroke()
+  }
+
   function _performRectDraw(x, y, width, height) {
     contextRef.current.strokeRect(x, y, width, height)
   }
@@ -131,6 +133,7 @@ export function useDrawingKit(canvasRef, contextRef) {
     setPen,
     shapes,
     setShapes,
+    performLineDraw,
     onDrawShape,
     drawAllShapes,
     highlightSelectedShape,

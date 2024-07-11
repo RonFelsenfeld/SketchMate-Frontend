@@ -51,11 +51,12 @@ function getNewShape(shape, x, y) {
   }
 }
 
-function getNewLine(linePositions) {
+function getNewLine(linePositions, strokeColor) {
   return {
     _id: utilService.makeId(),
     type: LINE,
     positions: [...linePositions],
+    strokeColor,
   }
 }
 

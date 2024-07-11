@@ -15,6 +15,7 @@ export function Canvas() {
     setPen,
     shapes,
     setShapes,
+    performLineDraw,
     onDrawShape,
     drawAllShapes,
     highlightSelectedShape,
@@ -73,9 +74,7 @@ export function Canvas() {
     // todo: allow unlimited drawing shapes?
 
     if (shape === LINE) {
-      contextRef.current.lineTo(offsetX, offsetY)
-      contextRef.current.stroke()
-
+      performLineDraw(offsetX, offsetY)
       const linePositions = [...pen.linePositions, { x: offsetX, y: offsetY }]
       setPen(prevPen => ({ ...prevPen, linePositions }))
     } else {
