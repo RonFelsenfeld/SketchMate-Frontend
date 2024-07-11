@@ -1,11 +1,14 @@
 .canvas-section {
   position: relative;
+  flex-grow: 1;
 
   .canvas-container {
     width: $canvas-container-width;
     height: 80dvh;
 
     border: 2px solid $canvas-border-clr;
+    margin: auto;
+
     background-color: white;
     cursor: url(public/assets/img/brush-icon.png), auto;
 

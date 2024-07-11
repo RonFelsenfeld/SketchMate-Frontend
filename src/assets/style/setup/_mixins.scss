@@ -23,7 +23,8 @@
 // }
 
 @mixin fullPageDimensions {
-  min-height: calc(100dvh - $app-header-height);
+  height: 100dvh;
+  overflow-y: hidden;
 }
 
 @mixin logo($size: em(32px)) {
@@ -49,4 +50,14 @@
   transform-origin: 50% 100%;
   transform: scale($scale) translateY(-1px);
   background-color: $bgc;
+}
+
+@mixin pageHeader {
+  height: $app-header-height;
+  padding-inline: calc((100vw - $canvas-container-width) / 2);
+  background-color: $light-page-bg-clr;
+
+  .logo {
+    @include logo;
+  }
 }

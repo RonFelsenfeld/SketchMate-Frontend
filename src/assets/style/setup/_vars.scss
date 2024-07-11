@@ -1,12 +1,10 @@
-$surface-clr: rgb(236, 239, 248);
-
 $main-font-clr: rgb(50, 51, 56);
 $secondary-font-clr: rgb(255, 255, 255);
 
 $main-font-family: MontserratRegular;
 $heading-font-family: MontserratBold;
 
-$app-header-height: 50px;
+$app-header-height: 60px;
 $canvas-container-width: 95vw;
 $controls-sections-gap: 15px;
 
@@ -14,6 +12,15 @@ $main-theme-clr-20: rgb(24, 90, 71);
 $main-theme-clr-10: rgb(73, 167, 140);
 $main-theme-clr-5: rgb(172, 240, 221);
 $main-theme-clr: rgb(91, 197, 167);
+
+$light-page-bg-clr: rgb(207, 255, 241);
+$light-page-gradient: linear-gradient(
+  180deg,
+  rgba(207, 255, 241, 1) 49%,
+  rgba(180, 255, 233, 1) 65%,
+  rgba(142, 237, 209, 1) 80%,
+  rgba(79, 217, 176, 1) 94%
+);
 
 $secondary-theme-clr: rgb(34, 88, 145);
 

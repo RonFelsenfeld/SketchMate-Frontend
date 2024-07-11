@@ -1,4 +1,6 @@
 .canvas-index {
   @include fullPageDimensions;
-  // margin-block-start: 55px;
+
+  background-color: $light-page-bg-clr;
+  background: $light-page-gradient;
 }

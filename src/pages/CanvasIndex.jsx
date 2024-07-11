@@ -1,13 +1,10 @@
-import { useEffect, useRef } from 'react'
 import { Canvas } from '../components/canvas/Canvas'
+import { CanvasHeader } from '../components/canvas/CanvasHeader'
 
 export function CanvasIndex() {
-  const canvasIndexRef = useRef(null)
-
-  useEffect
-
   return (
-    <section className="canvas-index flex column align-center justify-center animate__animated animate__slideInRight">
+    <section className="canvas-index flex column animate__animated animate__slideInRight">
+      <CanvasHeader />
       <Canvas />
     </section>
   )

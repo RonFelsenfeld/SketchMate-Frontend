@@ -135,7 +135,7 @@ export function Canvas() {
   }
 
   return (
-    <section className="canvas-section flex align-center">
+    <section className="canvas-section flex">
       <CanvasControls
         pen={pen}
         setPen={setPen}

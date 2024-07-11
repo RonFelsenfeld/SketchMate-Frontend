@@ -1,40 +1,55 @@
 .home-page {
   @include fullPageDimensions;
-  padding-inline: calc((100vw - $canvas-container-width) / 2);
+  background-color: $light-page-bg-clr;
+  background: $light-page-gradient;
 
-  .heading-container {
-    width: 50vw;
-    gap: 20px;
-    margin-block-end: 40px;
-    text-align: center;
+  .hero-section {
+    flex-grow: 1;
 
-    .main-heading {
-      font-size: em(36px);
-      font-family: $heading-font-family;
-      letter-spacing: -0.2px;
+    .main-content {
+      flex-grow: 1;
+      gap: 30px;
 
-      .logo {
-        @include logo(1em);
+      .heading-container {
+        width: 75vw;
+        gap: 20px;
+        text-align: center;
+
+        .main-heading {
+          font-size: em(48px);
+          font-family: $heading-font-family;
+          line-height: 1em;
+          letter-spacing: -0.2px;
+
+          .logo {
+            @include logo(1em);
+          }
+        }
+
+        .secondary-heading {
+          font-size: em(24px);
+          line-height: 1.5em;
+        }
+      }
+
+      .btn-cta {
+        padding: 15px 30px;
+        border-radius: 2em;
+
+        font-size: em(16px);
+        color: $secondary-font-clr;
+
+        background-color: $main-theme-clr;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: $main-theme-clr-10;
+        }
       }
     }
 
-    .secondary-heading {
-      font-size: em(24px);
-    }
-  }
-
-  .btn-cta {
-    padding: 15px 30px;
-    border-radius: 2em;
-
-    font-size: em(16px);
-    color: $secondary-font-clr;
-
-    background-color: $main-theme-clr;
-    transition: background-color 0.3s;
-
-    &:hover {
-      background-color: $main-theme-clr-10;
+    .hero-img {
+      transform: translateY(18px);
     }
   }
 }
