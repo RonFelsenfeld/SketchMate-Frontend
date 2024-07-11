@@ -24,11 +24,16 @@
     border-top-right-radius: $controls-border-radius;
     border-bottom-right-radius: $controls-border-radius;
 
-    transition: background-color $theme-transition, gap 0.3s, padding-inline 0.3s;
+    transition: all $theme-transition;
     transform: translate(0, -50%);
 
-    &:hover {
-      padding-inline-end: 30px;
+    &.drawing {
+      opacity: 0.5;
+      transform: translate(-70%, -50%);
+    }
+
+    &:not(.drawing):hover {
+      padding-inline-end: 10px;
     }
 
     .btn {
@@ -36,6 +41,18 @@
         &.gap {
           margin-inline-end: 0;
           margin-block-end: $controls-sections-gap;
+        }
+      }
+    }
+  }
+
+  @include for-small-layout {
+    padding: 10px 5px;
+
+    .btn {
+      &:is(.btn-shape, .btn-size, .btn-rotate, .btn-color) {
+        &.gap {
+          margin-block-end: 0;
         }
       }
     }
@@ -61,7 +78,7 @@
     }
   }
 
-  &:hover {
+  &:not(.drawing):hover {
     gap: 15px;
 
     .btn {
@@ -81,13 +98,15 @@
 
   .btn {
     @include controlBtn;
-    width: em(32px);
-    height: em(32px);
     background-color: $control-btn-bg-clr;
 
     &::before {
       font-size: em(14px);
       font-family: FaSolid;
+
+      @include for-small-layout {
+        font-size: em(12px);
+      }
     }
 
     &.btn-pen {
@@ -159,6 +178,10 @@
           font-size: em(14px);
           font-family: faSolid;
           transform: translate(-50%, -50%);
+
+          @include for-small-layout {
+            font-size: em(12px);
+          }
         }
       }
 

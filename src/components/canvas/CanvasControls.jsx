@@ -1,4 +1,6 @@
+import { useEffect, useRef } from 'react'
 import { ELLIPSE, LINE, RECT, ROTATE_ANGLE } from '../../services/canvas.service'
+import { utilService } from '../../services/util.service'
 import { showTooltip, hideTooltip } from '../../services/event-bus.service'
 import { useTheme } from '../../customHooks/useTheme'
 
@@ -12,7 +14,12 @@ export function CanvasControls({
   onRemoveShape,
   clearCanvas,
 }) {
+  const controlsRef = useRef(null)
   const { getThemeClass } = useTheme()
+
+  useEffect(() => {
+    utilService.animateCSS(controlsRef.current, 'fadeIn')
+  }, [])
 
   function onSetShape(shape) {
     setPen(prevPen => ({ ...prevPen, shape }))
@@ -55,9 +62,18 @@ export function CanvasControls({
     return pen.shape === shape ? 'selected' : ''
   }
 
+  function getIsDrawingClass() {
+    // Relevant only for mobile devices
+    if (window.innerWidth > 850) return ''
+    return pen.isDrawing && pen.shape === LINE ? 'drawing' : ''
+  }
+
   const { strokeColor, fillColor } = pen
   return (
-    <section className={`canvas-controls flex ${getThemeClass()}`}>
+    <section
+      ref={controlsRef}
+      className={`canvas-controls flex ${getThemeClass()} ${getIsDrawingClass()}`}
+    >
       <button
         className={`btn btn-pen ${getSelectedClass(LINE)}`}
         onClick={() => onSetShape(LINE)}
