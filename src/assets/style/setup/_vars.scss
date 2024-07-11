@@ -1,13 +1,15 @@
-$main-font-clr: rgb(50, 51, 56);
-$secondary-font-clr: rgb(255, 255, 255);
-
-$main-font-family: MontserratRegular;
-$heading-font-family: MontserratBold;
-
+// * Layout and Sizes
 $app-header-height: 60px;
 $canvas-container-width: 95vw;
 $controls-sections-gap: 15px;
 
+// * Font
+$main-font-clr: rgb(50, 51, 56);
+$secondary-font-clr: rgb(255, 255, 255);
+$main-font-family: MontserratRegular;
+$heading-font-family: MontserratBold;
+
+// * Color Palette
 $main-theme-clr-20: rgb(24, 90, 71);
 $main-theme-clr-10: rgb(73, 167, 140);
 $main-theme-clr-5: rgb(172, 240, 221);
@@ -18,6 +20,7 @@ $dark-theme-clr-10: rgb(39, 101, 169);
 $dark-theme-clr-5: rgb(133, 174, 219);
 $dark-theme-clr: rgb(75, 143, 215);
 
+// * Theme
 $light-page-bg-clr: rgb(207, 255, 241);
 $light-page-gradient: linear-gradient(
   180deg,
@@ -26,27 +29,27 @@ $light-page-gradient: linear-gradient(
   rgba(142, 237, 209, 1) 80%,
   rgba(79, 217, 176, 1) 94%
 );
-
 $dark-page-bg-clr: rgb(19, 15, 64);
 $dark-page-gradient: linear-gradient(180deg, #130f40 0%, #000000 74%);
 
+// * Extra Colors
+$canvas-bg-clr: rgb(255, 255, 255);
 $control-btn-bg-clr: rgb(230, 230, 230);
 $remove-btn-bg-clr: rgb(253, 60, 60);
 $theme-btn-light-clr: rgb(131, 213, 240);
 $theme-btn-dark-clr: rgb(99, 99, 99);
 
+// * Borders
 $canvas-border-clr: rgb(102, 102, 102);
 $controls-border-clr: rgb(72, 72, 72);
 $control-btn-border-clr: rgb(104, 104, 104);
 
+// * Extra
 $controls-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.357);
 $selected-btn-shadow: 0px 3px 4px 1px rgba(85, 85, 85, 0.33);
 $tooltip-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.2);
 $controls-border-radius: 5px;
 $theme-transition: 0.4s;
-
-$clr-success: rgb(152, 232, 152);
-$clr-error: rgb(243, 150, 150);
 
 // $break-mobile: 450px;
 // $break-small: 600px;

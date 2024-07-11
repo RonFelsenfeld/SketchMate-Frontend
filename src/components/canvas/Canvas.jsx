@@ -9,6 +9,7 @@ import { CanvasControls } from './CanvasControls'
 export function Canvas() {
   const [selectedShape, setSelectedShape] = useState(null)
   const [dragInfo, setDragInfo] = useState(canvasService.getDefaultDragInfo())
+
   const canvasContainerRef = useRef(null)
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
@@ -43,8 +44,8 @@ export function Canvas() {
   function onCanvasClicked({ nativeEvent }) {
     // When dragging and releasing, it counts as a click. (Therefore, need to prevent it)
     if (dragInfo.isDragging) return handleEndDragging()
-    setSelectedShape(null)
 
+    setSelectedShape(null)
     const { x, y } = utilService.getEvPos(nativeEvent)
     const clickedShape = canvasService.findClickedShape(shapes, x, y)
 
@@ -62,8 +63,8 @@ export function Canvas() {
 
     contextRef.current.moveTo(x, y)
     contextRef.current.beginPath()
-
     resetStrokeStyle()
+
     const pos = { x, y }
     setPen(prevPen => ({ ...prevPen, linePositions: [pos], isDrawing: true }))
   }
@@ -73,8 +74,9 @@ export function Canvas() {
     if (dragInfo.isDragging) return handleDrag(x, y)
 
     const hoveredShape = canvasService.findHoveredShape(shapes, x, y)
-    if (hoveredShape) utilService.addClassToElement(canvasContainerRef.current, 'hovering')
-    else utilService.removeClassFromElement(canvasContainerRef.current, 'hovering')
+    const { addClassToElement, removeClassFromElement } = utilService
+    const classFn = hoveredShape ? addClassToElement : removeClassFromElement
+    classFn(canvasContainerRef.current, 'hovering')
 
     const { isDrawing, shape } = pen
     if (!isDrawing || shape !== LINE) return
@@ -99,7 +101,6 @@ export function Canvas() {
   }
 
   function onRemoveShape() {
-    // todo: disable btn when has no selected shape
     if (!selectedShape) return
     removeShape(selectedShape)
     setSelectedShape(null)
@@ -136,18 +137,18 @@ export function Canvas() {
 
   return (
     <section className="canvas-section flex">
-      <CanvasControls
-        pen={pen}
-        setPen={setPen}
-        shapes={shapes}
-        setShapes={setShapes}
-        selectedShape={selectedShape}
-        setSelectedShape={setSelectedShape}
-        onRemoveShape={onRemoveShape}
-        clearCanvas={clearCanvas}
-      />
+      <div ref={canvasContainerRef} className={`canvas-container ${getClasses()}`}>
+        <CanvasControls
+          pen={pen}
+          setPen={setPen}
+          shapes={shapes}
+          setShapes={setShapes}
+          selectedShape={selectedShape}
+          setSelectedShape={setSelectedShape}
+          onRemoveShape={onRemoveShape}
+          clearCanvas={clearCanvas}
+        />
 
-      <div ref={canvasContainerRef} className={`canvas-container  ${getClasses()}`}>
         <canvas
           ref={canvasRef}
           className="canvas"

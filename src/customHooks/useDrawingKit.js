@@ -8,7 +8,7 @@ export function useDrawingKit(canvasRef, contextRef) {
   const { isDarkMode } = useTheme()
 
   function onDrawShape(shape, x, y) {
-    const shapesDrawingMap = {
+    const shapesDrawingHandlersMap = {
       line: _processLine,
       rect: _processRect,
       ellipse: _processEllipse,
@@ -16,15 +16,17 @@ export function useDrawingKit(canvasRef, contextRef) {
 
     // If shape is of type string --> Generate and draw new shape.
     // Else --> Draw existing shape (represented as an object)
-    const shapeToDraw =
-      typeof shape === 'string'
-        ? canvasService.getNewShape(shape, x, y, pen.strokeColor, pen.fillColor)
-        : { ...shape }
+    let shapeToDraw
+    if (typeof shape === 'string') {
+      shapeToDraw = canvasService.getNewShape(shape, x, y, pen.strokeColor, pen.fillColor)
+    } else {
+      shapeToDraw = { ...shape }
+    }
 
     contextRef.current.beginPath()
     contextRef.current.strokeStyle = shapeToDraw.strokeColor
     contextRef.current.fillStyle = shapeToDraw.fillColor
-    shapesDrawingMap[shapeToDraw.type](shapeToDraw)
+    shapesDrawingHandlersMap[shapeToDraw.type](shapeToDraw)
     contextRef.current.closePath()
 
     setPen(prevPen => ({ ...prevPen, isDrawing: false }))

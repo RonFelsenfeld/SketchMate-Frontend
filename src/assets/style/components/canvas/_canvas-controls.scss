@@ -10,8 +10,8 @@
   border-radius: $controls-border-radius;
 
   background-color: $main-theme-clr;
-  transform: translate(-50%, 50%);
   box-shadow: $controls-shadow;
+  transform: translate(-50%, -50%);
   transition: background-color $theme-transition, gap 0.3s;
 
   &.dark {
@@ -56,7 +56,6 @@
     @include controlBtn;
     width: em(32px);
     height: em(32px);
-
     background-color: $control-btn-bg-clr;
 
     &::before {
@@ -183,8 +182,8 @@
     }
 
     &.selected {
-      background-color: $secondary-font-clr;
       border-width: 2px;
+      background-color: $secondary-font-clr;
       box-shadow: $selected-btn-shadow;
     }
   }

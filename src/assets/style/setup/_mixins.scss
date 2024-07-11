@@ -53,20 +53,16 @@
 }
 
 @mixin hoveredBtn($scale, $bgc) {
+  background-color: $bgc;
   transform-origin: 50% 100%;
   transform: scale($scale) translateY(-1px);
-  background-color: $bgc;
 }
 
 @mixin pageHeader {
   height: $app-header-height;
   padding-inline: calc((100vw - $canvas-container-width) / 2);
-  background-color: $light-page-bg-clr;
-  transition: background-color $theme-transition;
 
   &.dark {
-    background-color: $dark-page-bg-clr;
-
     .logo {
       span {
         color: $dark-theme-clr;

@@ -19,18 +19,6 @@ function createEventEmitter() {
 
 export const eventBus = createEventEmitter()
 
-export function showUserMsg(msg) {
-  eventBus.emit(SHOW_MSG, msg)
-}
-
-export function showSuccessMsg(txt) {
-  showUserMsg({ txt, type: 'success' })
-}
-
-export function showErrorMsg(txt) {
-  showUserMsg({ txt, type: 'error' })
-}
-
 export function showTooltip(target, txt) {
   const { left, top, width } = target.getBoundingClientRect()
   const pos = { x: left, y: top }
