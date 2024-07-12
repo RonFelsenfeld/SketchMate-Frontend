@@ -9,11 +9,11 @@ import { CanvasControls } from './CanvasControls'
 export function Canvas() {
   const [selectedShape, setSelectedShape] = useState(null)
   const [keyPressed, setKeyPressed] = useState('')
-  const [dragInfo, setDragInfo] = useState(canvasService.getDefaultDragInfo())
 
   const canvasContainerRef = useRef(null)
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
+  const dragInfoRef = useRef(canvasService.getDefaultDragInfo())
 
   const {
     pen,
@@ -42,27 +42,29 @@ export function Canvas() {
   useEffect(() => {
     clearCanvas()
     drawAllShapes()
+
     if (selectedShape) highlightSelectedShape(selectedShape)
-  }, [selectedShape])
+  }, [selectedShape, keyPressed])
+
+  useEffect(() => {
+    if (keyPressed) handleKeyboardPress(keyPressed)
+  }, [keyPressed])
 
   function onCanvasClicked({ nativeEvent }) {
     // When dragging and releasing, it counts as a click. (Therefore, need to prevent it)
-    if (dragInfo.isDragging) return handleEndDragging()
+    if (dragInfoRef.current.isDragging) return handleEndDragging()
 
-    setSelectedShape(null)
     const { x, y } = utilService.getEvPos(nativeEvent)
     const clickedShape = canvasService.findClickedShape(shapes, x, y)
 
     if (clickedShape) {
       setSelectedShape(clickedShape)
+    } else if (selectedShape) {
+      setSelectedShape(null)
     } else if (pen.shape !== LINE) {
       onDrawShape(pen.shape, x, y)
     }
   }
-
-  useEffect(() => {
-    if (keyPressed) handleKeyboardPress(keyPressed)
-  }, [keyPressed])
 
   function onStartDrawing({ nativeEvent }) {
     const { x, y } = utilService.getEvPos(nativeEvent)
@@ -79,8 +81,9 @@ export function Canvas() {
 
   function onDrawing({ nativeEvent }) {
     const { x, y } = utilService.getEvPos(nativeEvent)
-    if (dragInfo.isDragging) return handleDrag(x, y)
+    if (dragInfoRef.current.isDragging) return handleDrag(x, y)
 
+    // Finding an hovered shape for the cursor icon to change
     const hoveredShape = canvasService.findHoveredShape(shapes, x, y)
     const { addClassToElement, removeClassFromElement } = utilService
     const classFn = hoveredShape ? addClassToElement : removeClassFromElement
@@ -105,12 +108,12 @@ export function Canvas() {
 
   function handleStartDragging(shape, x, y) {
     setSelectedShape(shape)
-    setDragInfo({ isDragging: true, pos: { x, y } })
+    dragInfoRef.current = { isDragging: true, pos: { x, y } }
     setPen(prevPen => ({ ...prevPen, isDrawing: false }))
   }
 
   function handleDrag(offsetX, offsetY) {
-    const { pos } = dragInfo
+    const { pos } = dragInfoRef.current
     const deltaX = offsetX - pos.x
     const deltaY = offsetY - pos.y
 
@@ -118,11 +121,11 @@ export function Canvas() {
     const updatedShape = { ...selectedShape, ...newPos }
 
     updateShapes(updatedShape)
-    setDragInfo(prevInfo => ({ ...prevInfo, ...newPos }))
+    dragInfoRef.current = { ...dragInfoRef.current, ...newPos }
   }
 
   function handleEndDragging() {
-    setDragInfo(canvasService.getDefaultDragInfo())
+    dragInfoRef.current = canvasService.getDefaultDragInfo()
   }
 
   function onRemoveShape() {
@@ -152,9 +155,11 @@ export function Canvas() {
   }
 
   function onKeyboardPress({ key }) {
-    setKeyPressed(key)
+    const ARROWS_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft']
+    if (ARROWS_KEYS.includes(key)) setKeyPressed(key)
   }
 
+  // Could not attach as event listener directly because it doesn't has access to the updated selectedShape and shapes states
   function handleKeyboardPress(key) {
     setKeyPressed('')
     if (!selectedShape) return
@@ -166,18 +171,16 @@ export function Canvas() {
       ArrowLeft: { diffX: -5, diffY: 0 },
     }
 
-    if (arrowsMap[key]) {
-      const { x: prevX, y: prevY } = selectedShape
-      const { diffX, diffY } = arrowsMap[key]
+    const { x: prevX, y: prevY } = selectedShape
+    const { diffX, diffY } = arrowsMap[key]
 
-      const newPos = { x: prevX + diffX, y: prevY + diffY }
-      const updatedShape = { ...selectedShape, ...newPos }
-      updateShapes(updatedShape)
-    }
+    const newPos = { x: prevX + diffX, y: prevY + diffY }
+    const updatedShape = { ...selectedShape, ...newPos }
+    updateShapes(updatedShape)
   }
 
   function getClasses() {
-    if (dragInfo.isDragging) return 'dragging'
+    if (dragInfoRef.current.isDragging) return 'dragging'
     if (pen.shape !== LINE) return 'shape'
     return ''
   }
