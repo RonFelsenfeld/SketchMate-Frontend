@@ -11,7 +11,7 @@ export function HomePage() {
 
   function onGetStarted() {
     utilService.animateCSS(homePageRef.current, 'slideOutLeft')
-    setTimeout(() => navigate('/canvas'), 800)
+    setTimeout(() => navigate('/canvas'), 700)
   }
 
   return (

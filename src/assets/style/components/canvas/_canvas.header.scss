@@ -1,6 +1,10 @@
 .canvas-header {
   @include pageHeader;
 
+  .logo {
+    cursor: pointer;
+  }
+
   &.dark {
     .btn-home {
       &::before {
