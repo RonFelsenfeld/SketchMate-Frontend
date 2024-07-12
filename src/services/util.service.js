@@ -2,6 +2,7 @@ export const utilService = {
   makeId,
   saveToStorage,
   loadFromStorage,
+  removeFromStorage,
   greetBasedOnHour,
   animateCSS,
   getEvPos,
@@ -27,6 +28,10 @@ function saveToStorage(key, value) {
 function loadFromStorage(key) {
   const data = localStorage.getItem(key)
   return data ? JSON.parse(data) : undefined
+}
+
+function removeFromStorage(key) {
+  localStorage.removeItem(key)
 }
 
 function greetBasedOnHour() {
