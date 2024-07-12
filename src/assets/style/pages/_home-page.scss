@@ -61,7 +61,7 @@
           line-height: 1em;
           letter-spacing: -0.2px;
 
-          @include for-small-layout {
+          @include for-narrow-layout {
             font-size: em(36px);
           }
 
@@ -78,7 +78,7 @@
           font-size: em(24px);
           line-height: 1.5em;
 
-          @include for-small-layout {
+          @include for-narrow-layout {
             font-size: em(18px);
           }
 

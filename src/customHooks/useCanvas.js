@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { canvasService, ELLIPSE, RECT } from '../services/canvas.service'
 import { useTheme } from './useTheme'
 
-export function useDrawingKit(canvasRef, contextRef) {
+export function useCanvas(canvasRef, contextRef) {
   const [pen, setPen] = useState(canvasService.getDefaultPen())
   const [shapes, setShapes] = useState([])
   const { isDarkMode } = useTheme()
@@ -33,11 +33,8 @@ export function useDrawingKit(canvasRef, contextRef) {
   }
 
   function drawAllShapes(shapesToRender = shapes) {
-    const shapesToDraw = [...shapesToRender]
-    // Clearing the shapes state for the functions to fill it when drawing
-    setShapes([])
     resetStrokeStyle()
-    shapesToDraw.forEach(shape => onDrawShape(shape, shape.x, shape.y))
+    shapesToRender.forEach(shape => onDrawShape(shape, shape.x, shape.y))
   }
 
   function highlightSelectedShape(shape) {

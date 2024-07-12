@@ -8,11 +8,10 @@ export function CanvasControls({
   pen,
   setPen,
   shapes,
-  setShapes,
   selectedShape,
-  setSelectedShape,
   onRemoveShape,
   clearCanvas,
+  updateShapes,
 }) {
   const controlsRef = useRef(null)
   const { getThemeClass } = useTheme()
@@ -51,11 +50,6 @@ export function CanvasControls({
     const newAngle = selectedShape.angle + angleDiff
     const updatedShape = { ...selectedShape, angle: newAngle }
     updateShapes(updatedShape)
-  }
-
-  function updateShapes(updatedShape) {
-    setSelectedShape(updatedShape)
-    setShapes(shapes.map(s => (s._id === updatedShape._id ? updatedShape : s)))
   }
 
   function getSelectedClass(shape) {

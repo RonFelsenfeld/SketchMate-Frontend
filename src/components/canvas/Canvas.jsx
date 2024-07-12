@@ -3,11 +3,12 @@ import { useEffect, useRef, useState } from 'react'
 import { canvasService, LINE } from '../../services/canvas.service'
 import { utilService } from '../../services/util.service'
 
-import { useDrawingKit } from '../../customHooks/useDrawingKit'
+import { useCanvas } from '../../customHooks/useCanvas'
 import { CanvasControls } from './CanvasControls'
 
 export function Canvas() {
   const [selectedShape, setSelectedShape] = useState(null)
+  const [keyPressed, setKeyPressed] = useState('')
   const [dragInfo, setDragInfo] = useState(canvasService.getDefaultDragInfo())
 
   const canvasContainerRef = useRef(null)
@@ -26,16 +27,16 @@ export function Canvas() {
     resetStrokeStyle,
     removeShape,
     clearCanvas,
-  } = useDrawingKit(canvasRef, contextRef)
+  } = useCanvas(canvasRef, contextRef)
 
   useEffect(() => {
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')
     contextRef.current = context
     resizeCanvas(canvas)
+    addEventListeners()
 
-    window.addEventListener('resize', resizeCanvas)
-    return () => window.removeEventListener('resize', resizeCanvas)
+    return removeEventListeners
   }, [])
 
   useEffect(() => {
@@ -58,6 +59,10 @@ export function Canvas() {
       onDrawShape(pen.shape, x, y)
     }
   }
+
+  useEffect(() => {
+    if (keyPressed) handleKeyboardPress(keyPressed)
+  }, [keyPressed])
 
   function onStartDrawing({ nativeEvent }) {
     const { x, y } = utilService.getEvPos(nativeEvent)
@@ -98,17 +103,6 @@ export function Canvas() {
     setShapes(prevShapes => [...prevShapes, newLine])
   }
 
-  function resizeCanvas(canvasEl) {
-    canvasEl.width = canvasContainerRef.current.clientWidth
-    canvasEl.height = canvasContainerRef.current.clientHeight
-  }
-
-  function onRemoveShape() {
-    if (!selectedShape) return
-    removeShape(selectedShape)
-    setSelectedShape(null)
-  }
-
   function handleStartDragging(shape, x, y) {
     setSelectedShape(shape)
     setDragInfo({ isDragging: true, pos: { x, y } })
@@ -123,13 +117,63 @@ export function Canvas() {
     const newPos = { x: pos.x + deltaX, y: pos.y + deltaY }
     const updatedShape = { ...selectedShape, ...newPos }
 
-    setSelectedShape(updatedShape)
-    setShapes(shapes.map(s => (s._id === updatedShape._id ? updatedShape : s)))
+    updateShapes(updatedShape)
     setDragInfo(prevInfo => ({ ...prevInfo, ...newPos }))
   }
 
   function handleEndDragging() {
     setDragInfo(canvasService.getDefaultDragInfo())
+  }
+
+  function onRemoveShape() {
+    if (!selectedShape) return
+    removeShape(selectedShape)
+    setSelectedShape(null)
+  }
+
+  function updateShapes(updatedShape) {
+    setSelectedShape(updatedShape)
+    setShapes(shapes.map(s => (s._id === updatedShape._id ? updatedShape : s)))
+  }
+
+  function addEventListeners() {
+    document.addEventListener('resize', resizeCanvas)
+    document.addEventListener('keydown', onKeyboardPress)
+  }
+
+  function removeEventListeners() {
+    document.removeEventListener('resize', resizeCanvas)
+    document.removeEventListener('keydown', onKeyboardPress)
+  }
+
+  function resizeCanvas(canvasEl) {
+    canvasEl.width = canvasContainerRef.current.clientWidth
+    canvasEl.height = canvasContainerRef.current.clientHeight
+  }
+
+  function onKeyboardPress({ key }) {
+    setKeyPressed(key)
+  }
+
+  function handleKeyboardPress(key) {
+    setKeyPressed('')
+    if (!selectedShape) return
+
+    const arrowsMap = {
+      ArrowUp: { diffX: 0, diffY: -5 },
+      ArrowDown: { diffX: 0, diffY: 5 },
+      ArrowRight: { diffX: 5, diffY: 0 },
+      ArrowLeft: { diffX: -5, diffY: 0 },
+    }
+
+    if (arrowsMap[key]) {
+      const { x: prevX, y: prevY } = selectedShape
+      const { diffX, diffY } = arrowsMap[key]
+
+      const newPos = { x: prevX + diffX, y: prevY + diffY }
+      const updatedShape = { ...selectedShape, ...newPos }
+      updateShapes(updatedShape)
+    }
   }
 
   function getClasses() {
@@ -145,11 +189,10 @@ export function Canvas() {
           pen={pen}
           setPen={setPen}
           shapes={shapes}
-          setShapes={setShapes}
           selectedShape={selectedShape}
-          setSelectedShape={setSelectedShape}
           onRemoveShape={onRemoveShape}
           clearCanvas={clearCanvas}
+          updateShapes={updateShapes}
         />
 
         <canvas
