@@ -1,3 +1,26 @@
 .canvas-header {
   @include pageHeader;
+
+  &.dark {
+    .btn-home {
+      &::before {
+        color: $secondary-font-clr;
+      }
+    }
+  }
+
+  .btns-container {
+    gap: 15px;
+
+    .btn-home {
+      background-color: transparent;
+
+      &::before {
+        content: '\f015';
+        font-size: em(16px);
+        font-family: faSolid;
+        transition: color $theme-transition;
+      }
+    }
+  }
 }

@@ -13,7 +13,13 @@ export function CanvasHeader() {
         </h1>
       </NavLink>
 
-      <ThemeToggleBtn />
+      <div className="btns-container flex align-center">
+        <ThemeToggleBtn />
+
+        <NavLink to={'/'}>
+          <button className="btn-home" title="Return to home page"></button>
+        </NavLink>
+      </div>
     </header>
   )
 }
