@@ -12,8 +12,8 @@ $heading-font-family: MontserratBold;
 // * Color Palette
 $main-theme-clr-20: rgb(24, 90, 71);
 $main-theme-clr-10: rgb(73, 167, 140);
-$main-theme-clr-5: rgb(172, 240, 221);
 $main-theme-clr: rgb(91, 197, 167);
+$main-theme-clr--5: rgb(172, 240, 221);
 
 $dark-theme-clr-20: rgb(12, 65, 122);
 $dark-theme-clr-10: rgb(39, 101, 169);
@@ -48,6 +48,10 @@ $control-btn-border-clr: rgb(104, 104, 104);
 $controls-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.357);
 $selected-btn-shadow: 0px 3px 4px 1px rgba(85, 85, 85, 0.33);
 $tooltip-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.2);
+$btn-cta-pulse-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+$btn-cta-shadow-light: 0 0 0 0px $main-theme-clr;
+$btn-cta-shadow-dark: 0 0 0 0px $dark-theme-clr;
+
 $controls-border-radius: 5px;
 $theme-transition: 0.4s;
 

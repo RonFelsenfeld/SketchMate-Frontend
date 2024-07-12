@@ -1,0 +1,17 @@
+@keyframes pulse-animation-light {
+  0% {
+    box-shadow: $btn-cta-shadow-light;
+  }
+  100% {
+    box-shadow: $btn-cta-pulse-shadow;
+  }
+}
+
+@keyframes pulse-animation-dark {
+  0% {
+    box-shadow: $btn-cta-shadow-dark;
+  }
+  100% {
+    box-shadow: $btn-cta-pulse-shadow;
+  }
+}

@@ -18,10 +18,20 @@
         }
 
         .btn-cta {
-          background-color: $dark-theme-clr;
+          animation-name: pulse-animation-dark;
+
+          &::before {
+            background-color: darken($dark-theme-clr, 15%);
+          }
+
+          &::after {
+            background-color: $dark-theme-clr;
+          }
 
           &:hover {
-            background-color: $dark-theme-clr-10;
+            &::before {
+              width: 100%;
+            }
           }
         }
       }
@@ -79,17 +89,45 @@
       }
 
       .btn-cta {
+        display: inline-block;
+        position: relative;
+
         padding: 15px 30px;
         border-radius: 2em;
 
         font-size: em(16px);
         color: $secondary-font-clr;
 
-        background-color: $main-theme-clr;
-        transition: background-color $theme-transition;
+        overflow: hidden;
+        z-index: 1;
+        animation: pulse-animation-light 2s ease-in-out 2s infinite;
+
+        &::after,
+        &::before {
+          content: '';
+          position: absolute;
+          inset: auto auto 0 0;
+          height: 100%;
+        }
+
+        &::before {
+          width: 0%;
+          border-radius: 2em;
+          background-color: darken($main-theme-clr, 15%);
+          transition: all 0.4s;
+          z-index: -1;
+        }
+
+        &::after {
+          width: 100%;
+          background-color: $main-theme-clr;
+          z-index: -2;
+        }
 
         &:hover {
-          background-color: $main-theme-clr-10;
+          &::before {
+            width: 100%;
+          }
         }
       }
     }
