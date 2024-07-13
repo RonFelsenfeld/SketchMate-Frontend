@@ -1,10 +1,11 @@
 import { useTheme } from '../../customHooks/useTheme'
 
-export function ThemeToggleBtn() {
+export function ThemeToggleBtn({ additionalFn = null }) {
   const { isDarkMode, setIsDarkMode, getThemeClass } = useTheme()
 
   function toggleIsDarkMode() {
     setIsDarkMode(!isDarkMode)
+    if (additionalFn) additionalFn()
   }
 
   return (

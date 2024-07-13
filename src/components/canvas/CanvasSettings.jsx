@@ -3,6 +3,7 @@ import { hideTooltip, showTooltip } from '../../services/event-bus.service'
 import { useTheme } from '../../customHooks/useTheme'
 import { useClickOutside } from '../../customHooks/useClickOutside'
 import { utilService } from '../../services/util.service'
+import { canvasService } from '../../services/canvas.service'
 
 export const CanvasSettings = memo(CanvasSettingsCmp)
 
@@ -24,6 +25,10 @@ function CanvasSettingsCmp({
     }, 600)
   })
 
+  useEffect(() => {
+    setSelectedShape(null)
+  }, [])
+
   function onUpdateSettings({ target }) {
     let { value, name: field } = target
     settingsRef.current = { ...settingsRef.current, [field]: +value }
@@ -31,24 +36,24 @@ function CanvasSettingsCmp({
     showTooltip(target, value)
   }
 
-  useEffect(() => {
-    setSelectedShape(null)
-  }, [])
-
   function onSetPenWidth({ target }) {
     const { value } = target
     setPen(prevPen => ({ ...prevPen, width: +value }))
     showTooltip(target, value)
   }
 
-  const { rotateAngle, sizeDiff } = settingsRef.current
+  function onResetSettings() {
+    settingsRef.current = canvasService.getDefaultSettings()
+    setPen(prevPen => ({ ...prevPen, width: 1 }))
+  }
 
+  const { rotateAngle, sizeDiff } = settingsRef.current
   return (
     <section
       className={`canvas-settings animate__animated animate__rotateInDownRight ${getThemeClass()}`}
       ref={settingsElRef}
     >
-      <form className="settings-form flex column align-center">
+      <form className="settings-form flex column">
         <div className="input-container flex align-center justify-between">
           <label htmlFor="penWidth">Pen width</label>
           <input
@@ -90,6 +95,10 @@ function CanvasSettingsCmp({
             onMouseLeave={hideTooltip}
           />
         </div>
+
+        <button type="button" className="btn-reset" onClick={onResetSettings}>
+          Reset to default
+        </button>
       </form>
     </section>
   )

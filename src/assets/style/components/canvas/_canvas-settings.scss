@@ -31,6 +31,10 @@
           width: 100%;
         }
       }
+
+      .btn-reset {
+        width: 100%;
+      }
     }
   }
 
@@ -44,10 +48,19 @@
           }
         }
       }
+
+      .btn-reset {
+        background-color: $dark-theme-clr;
+
+        &:hover {
+          background-color: $dark-theme-clr-10;
+        }
+      }
     }
   }
 
   .settings-form {
+    align-items: flex-end;
     justify-content: space-around;
     gap: 30px;
 
@@ -81,6 +94,21 @@
         &:active {
           pointer-events: none;
         }
+      }
+    }
+
+    .btn-reset {
+      padding: 5px 10px;
+      border-radius: $controls-border-radius;
+
+      font-size: em(16px);
+      color: $secondary-font-clr;
+
+      background-color: $main-theme-clr;
+      transition: background-color $theme-transition;
+
+      &:hover {
+        background-color: $main-theme-clr-10;
       }
     }
   }

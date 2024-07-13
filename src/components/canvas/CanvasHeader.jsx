@@ -11,7 +11,7 @@ export function CanvasHeader({ onBackToHome, setIsShowingSettings }) {
       </h1>
 
       <div className="btns-container flex align-center">
-        <ThemeToggleBtn />
+        <ThemeToggleBtn additionalFn={() => setIsShowingSettings(false)} />
 
         <button
           className="btn-settings"
