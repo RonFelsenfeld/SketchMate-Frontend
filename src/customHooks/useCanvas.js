@@ -7,13 +7,13 @@ export function useCanvas(canvasRef, canvasContainerRef, contextRef) {
   const [shapes, setShapes] = useState([])
   const { isDarkMode } = useTheme()
 
-  // ! For shapes from frontend -> Activate lines 12 & 26 / Deactivate lines 13 & 27
+  // ! For shapes from frontend -> Activate lines 12 & 21 / Deactivate lines 13 & 22
   // ! For shapes from backend (server) -> Do the opposite
   function onDrawShape(shape, x, y) {
     // async function onDrawShape(shape, x, y) {
 
-    // If shape is of type string --> Generate and draw new shape.
-    // Else --> Draw existing shape (represented as an object)
+    // If shape is of type string -> Generate and draw new shape.
+    // Else -> Draw existing shape (represented as an object)
     let shapeToDraw
     if (typeof shape === 'string') {
       const { strokeColor, fillColor } = pen

@@ -19,13 +19,10 @@
 
         .btn-cta {
           animation-name: pulse-animation-dark;
+          background-color: $dark-theme-clr;
 
           &::before {
             background-color: darken($dark-theme-clr, 15%);
-          }
-
-          &::after {
-            background-color: $dark-theme-clr;
           }
 
           &:hover {
@@ -89,29 +86,27 @@
       }
 
       .btn-cta {
-        display: inline-block;
         position: relative;
 
-        padding: 15px 30px;
+        padding: 15px 50px 15px 30px;
         border-radius: 2em;
 
         font-size: em(16px);
         color: $secondary-font-clr;
 
+        background-color: $main-theme-clr;
         overflow: hidden;
         z-index: 1;
         animation: pulse-animation-light 2s ease-in-out 2s infinite;
 
-        &::after,
         &::before {
           content: '';
           position: absolute;
           inset: auto auto 0 0;
-          height: 100%;
-        }
 
-        &::before {
           width: 0%;
+          height: 100%;
+
           border-radius: 2em;
           background-color: darken($main-theme-clr, 15%);
           transition: all 0.4s;
@@ -119,9 +114,12 @@
         }
 
         &::after {
-          width: 100%;
-          background-color: $main-theme-clr;
-          z-index: -2;
+          content: '\f061';
+          position: absolute;
+          inset: 50% 0 auto auto;
+
+          font-family: faSolid;
+          transform: translate(-25px, -50%);
         }
 
         &:hover {
