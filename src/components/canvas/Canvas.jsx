@@ -59,7 +59,7 @@ export function Canvas({ isShowingSettings, setIsShowingSettings }) {
     // When dragging and releasing, it counts as a click. (Therefore, need to prevent it)
     if (dragInfoRef.current.isDragging) return handleEndDragging()
 
-    const { x, y } = utilService.getEvPos(nativeEvent)
+    const { x, y } = utilService.getEvPos(nativeEvent, canvasElRef)
     const clickedShape = canvasService.findClickedShape(shapes, x, y)
 
     if (clickedShape) {
@@ -72,7 +72,7 @@ export function Canvas({ isShowingSettings, setIsShowingSettings }) {
   }
 
   function onStartDrawing({ nativeEvent }) {
-    const { x, y } = utilService.getEvPos(nativeEvent)
+    const { x, y } = utilService.getEvPos(nativeEvent, canvasElRef)
     const clickedShape = canvasService.findClickedShape(shapes, x, y)
     if (clickedShape) return handleStartDragging(clickedShape, x, y)
 
@@ -86,7 +86,7 @@ export function Canvas({ isShowingSettings, setIsShowingSettings }) {
   }
 
   function onDrawing({ nativeEvent }) {
-    const { x, y } = utilService.getEvPos(nativeEvent)
+    const { x, y } = utilService.getEvPos(nativeEvent, canvasElRef)
     if (dragInfoRef.current.isDragging) return handleDrag(x, y)
 
     // Finding an hovered shape for the cursor icon to change
@@ -208,6 +208,9 @@ export function Canvas({ isShowingSettings, setIsShowingSettings }) {
           onMouseDown={onStartDrawing}
           onMouseMove={onDrawing}
           onMouseUp={onEndDrawing}
+          onTouchStart={onStartDrawing}
+          onTouchMove={onDrawing}
+          onTouchEnd={onEndDrawing}
         ></canvas>
 
         {isShowingSettings && (

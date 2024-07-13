@@ -67,7 +67,7 @@ function animateCSS(el, animation = 'bounce') {
 }
 
 // Calculates event position (support touch event - preciser pos)
-function getEvPos(ev) {
+function getEvPos(ev, canvasElRef) {
   const TOUCH_EVENTS = ['touchstart', 'touchmove', 'touchend']
 
   let pos = {
@@ -76,12 +76,12 @@ function getEvPos(ev) {
   }
 
   if (TOUCH_EVENTS.includes(ev.type)) {
-    ev.preventDefault()
     ev = ev.changedTouches[0]
+    const canvas = canvasElRef.current.getBoundingClientRect()
 
     pos = {
-      x: ev.pageX - ev.target.offsetLeft - ev.target.clientLeft,
-      y: ev.pageY - ev.target.offsetTop - ev.target.clientTop,
+      x: ev.clientX - canvas.left,
+      y: ev.clientY - canvas.top,
     }
   }
 

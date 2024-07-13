@@ -49,6 +49,7 @@ function CanvasSettingsCmp({
   function onResetSettings() {
     settingsRef.current = canvasService.getDefaultSettings()
     setPen(prevPen => ({ ...prevPen, width: 1 }))
+    setForcedRendered(prev => prev + 1)
   }
 
   function onDownloadCanvas() {
