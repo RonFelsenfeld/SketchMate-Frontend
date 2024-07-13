@@ -2,33 +2,29 @@ import { useState } from 'react'
 import { canvasService, ELLIPSE, RECT } from '../services/canvas.service'
 import { useTheme } from './useTheme'
 
-export function useCanvas(canvasRef, contextRef) {
+export function useCanvas(canvasRef, canvasContainerRef, contextRef) {
   const [pen, setPen] = useState(canvasService.getDefaultPen())
   const [shapes, setShapes] = useState([])
   const { isDarkMode } = useTheme()
 
+  // ! For shapes from frontend -> Activate lines 12 & 26 / Deactivate lines 13 & 27
+  // ! For shapes from backend (server) -> Do the opposite
   function onDrawShape(shape, x, y) {
-    const shapesDrawingHandlersMap = {
-      line: _processLine,
-      rect: _processRect,
-      ellipse: _processEllipse,
-    }
+    // async function onDrawShape(shape, x, y) {
 
     // If shape is of type string --> Generate and draw new shape.
     // Else --> Draw existing shape (represented as an object)
     let shapeToDraw
     if (typeof shape === 'string') {
-      shapeToDraw = canvasService.getNewShape(shape, x, y, pen.strokeColor, pen.fillColor)
+      const { strokeColor, fillColor } = pen
+      const shapeData = { shape, x, y, strokeColor, fillColor }
+      shapeToDraw = canvasService.getNewShape(shapeData)
+      // shapeToDraw = await canvasService.getNewShapeFromServer(shapeData)
     } else {
       shapeToDraw = { ...shape }
     }
 
-    contextRef.current.beginPath()
-    contextRef.current.strokeStyle = shapeToDraw.strokeColor
-    contextRef.current.fillStyle = shapeToDraw.fillColor
-    shapesDrawingHandlersMap[shapeToDraw.type](shapeToDraw)
-    contextRef.current.closePath()
-
+    _processShape(shapeToDraw)
     setPen(prevPen => ({ ...prevPen, isDrawing: false }))
   }
 
@@ -72,6 +68,25 @@ export function useCanvas(canvasRef, contextRef) {
     const { width, height } = canvasRef.current
     contextRef.current.clearRect(0, 0, width, height)
     setShapes([])
+  }
+
+  function resizeCanvas(canvasEl) {
+    canvasEl.width = canvasContainerRef.current.clientWidth
+    canvasEl.height = canvasContainerRef.current.clientHeight
+  }
+
+  function _processShape(shape) {
+    const shapesDrawingHandlersMap = {
+      line: _processLine,
+      rect: _processRect,
+      ellipse: _processEllipse,
+    }
+
+    contextRef.current.beginPath()
+    contextRef.current.strokeStyle = shape.strokeColor
+    contextRef.current.fillStyle = shape.fillColor
+    shapesDrawingHandlersMap[shape.type](shape)
+    contextRef.current.closePath()
   }
 
   function _processLine(line) {
@@ -149,5 +164,6 @@ export function useCanvas(canvasRef, contextRef) {
     resetStrokeStyle,
     removeShape,
     clearCanvas,
+    resizeCanvas,
   }
 }

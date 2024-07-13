@@ -27,7 +27,8 @@ export function Canvas() {
     resetStrokeStyle,
     removeShape,
     clearCanvas,
-  } = useCanvas(canvasRef, contextRef)
+    resizeCanvas,
+  } = useCanvas(canvasRef, canvasContainerRef, contextRef)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -147,11 +148,6 @@ export function Canvas() {
   function removeEventListeners() {
     document.removeEventListener('resize', resizeCanvas)
     document.removeEventListener('keydown', onKeyboardPress)
-  }
-
-  function resizeCanvas(canvasEl) {
-    canvasEl.width = canvasContainerRef.current.clientWidth
-    canvasEl.height = canvasContainerRef.current.clientHeight
   }
 
   function onKeyboardPress({ key }) {

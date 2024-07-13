@@ -1,10 +1,12 @@
+import axios from 'axios'
 import { utilService } from './util.service'
 
 export const LINE = 'line'
 export const ELLIPSE = 'ellipse'
 export const RECT = 'rect'
-
 export const ROTATE_ANGLE = 5
+
+const BASE_URL = process.env.NODE_ENV === 'production' ? '/api/shape' : '//localhost:3030/api/shape'
 
 const CANVAS_KEY = 'canvasDB'
 
@@ -13,6 +15,7 @@ export const canvasService = {
   saveCanvas,
   getDefaultPen,
   getNewShape,
+  getNewShapeFromServer,
   findClickedShape,
   findHoveredShape,
   getNewLine,
@@ -40,7 +43,7 @@ function getDefaultPen() {
   }
 }
 
-function getNewShape(shape, x, y, strokeColor, fillColor) {
+function getNewShape({ shape, x, y, strokeColor, fillColor }) {
   return {
     _id: utilService.makeId(),
     type: shape,
@@ -52,6 +55,11 @@ function getNewShape(shape, x, y, strokeColor, fillColor) {
     strokeColor,
     fillColor,
   }
+}
+
+async function getNewShapeFromServer(shapeDate) {
+  const res = await axios.post(BASE_URL, shapeDate)
+  return res.data
 }
 
 function getNewLine(linePositions, strokeColor) {
