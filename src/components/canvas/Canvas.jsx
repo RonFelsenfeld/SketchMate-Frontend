@@ -10,10 +10,12 @@ export function Canvas() {
   const [selectedShape, setSelectedShape] = useState(null)
   const [keyPressed, setKeyPressed] = useState('')
 
+  const dragInfoRef = useRef(canvasService.getDefaultDragInfo())
+  const linePositionsRef = useRef([])
+
   const canvasContainerRef = useRef(null)
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
-  const dragInfoRef = useRef(canvasService.getDefaultDragInfo())
 
   const {
     pen,
@@ -77,7 +79,8 @@ export function Canvas() {
     resetStrokeStyle()
 
     const pos = { x, y }
-    setPen(prevPen => ({ ...prevPen, linePositions: [pos], isDrawing: true }))
+    setPen(prevPen => ({ ...prevPen, isDrawing: true }))
+    linePositionsRef.current = [pos]
   }
 
   function onDrawing({ nativeEvent }) {
@@ -94,16 +97,16 @@ export function Canvas() {
     if (!isDrawing || shape !== LINE) return
 
     performLineDraw(x, y)
-    const linePositions = [...pen.linePositions, { x, y }]
-    setPen(prevPen => ({ ...prevPen, linePositions }))
+    linePositionsRef.current = [...linePositionsRef.current, { x, y }]
   }
 
   function onEndDrawing() {
     contextRef.current.closePath()
     if (pen.shape !== LINE) return
 
-    const newLine = canvasService.getNewLine(pen.linePositions, pen.strokeColor)
-    setPen(prevPen => ({ ...prevPen, linePositions: [], isDrawing: false }))
+    const newLine = canvasService.getNewLine(linePositionsRef.current, pen.strokeColor)
+    linePositionsRef.current = []
+    setPen(prevPen => ({ ...prevPen, isDrawing: false }))
     setShapes(prevShapes => [...prevShapes, newLine])
   }
 
