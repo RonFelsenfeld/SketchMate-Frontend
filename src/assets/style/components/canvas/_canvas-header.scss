@@ -25,6 +25,7 @@
         font-size: em(16px);
         font-family: faSolid;
         transition: color $theme-transition;
+        color: $main-font-clr;
       }
 
       &.btn-home {

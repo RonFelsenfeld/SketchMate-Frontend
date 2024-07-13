@@ -27,7 +27,7 @@
       .input-container {
         flex-direction: column;
 
-        input[type='range'] {
+        .container {
           width: 100%;
         }
       }
@@ -69,39 +69,50 @@
   }
 
   .settings-form {
-    align-items: flex-end;
     justify-content: space-around;
     gap: 30px;
 
     .input-container {
       width: 100%;
-      gap: 30px;
+      gap: 20px;
 
       label {
         font-size: em(16px);
       }
 
-      input[type='range'] {
-        -webkit-appearance: none;
-        height: 3px;
-        border-radius: 2em;
+      .container {
+        display: grid;
+        grid-template-columns: 1fr 30px;
+        align-items: center;
+        gap: 7px;
 
-        background-color: $secondary-font-clr;
-        transition: background-color $theme-transition;
-        cursor: grabbing;
-
-        &::-webkit-slider-thumb {
+        input[type='range'] {
           -webkit-appearance: none;
-          width: 20px;
-          height: 20px;
+          height: 3px;
+          border-radius: 2em;
 
-          border-radius: 50%;
-          background-color: $main-theme-clr;
+          background-color: $secondary-font-clr;
           transition: background-color $theme-transition;
+          cursor: grabbing;
+
+          &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+
+            border-radius: 50%;
+            background-color: $main-theme-clr;
+            transition: background-color $theme-transition;
+          }
+
+          &:active {
+            pointer-events: none;
+          }
         }
 
-        &:active {
-          pointer-events: none;
+        span {
+          font-size: em(14px);
+          font-family: $heading-font-family;
         }
       }
     }
