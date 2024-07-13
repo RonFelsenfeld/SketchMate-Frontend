@@ -50,7 +50,13 @@
   }
 
   @include for-small-layout {
-    padding: 10px 5px;
+    transform: translateY(-45%);
+    padding: 5px;
+
+    &.drawing {
+      opacity: 0.5;
+      transform: translate(-70%, -45%);
+    }
 
     .btn {
       &:is(.btn-shape, .btn-size, .btn-rotate, .btn-color) {

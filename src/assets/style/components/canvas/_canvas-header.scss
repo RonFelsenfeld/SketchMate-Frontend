@@ -6,9 +6,11 @@
   }
 
   &.dark {
-    .btn-home {
-      &::before {
-        color: $secondary-font-clr;
+    .btns-container {
+      button {
+        &::before {
+          color: $secondary-font-clr;
+        }
       }
     }
   }
