@@ -30,6 +30,9 @@ export function CanvasControls({
 
     const width = selectedShape.width + diff
     const height = selectedShape.height + diff
+
+    if (width <= 0 || height <= 0) return // No negative dimensions
+
     const updatedShape = { ...selectedShape, width, height }
     updateShapes(updatedShape)
   }
