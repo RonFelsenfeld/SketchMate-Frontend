@@ -8,7 +8,7 @@ import { CanvasHeader } from '../components/canvas/CanvasHeader'
 import { Canvas } from '../components/canvas/Canvas'
 
 export function CanvasIndex() {
-  const [isShowingSettings, setIsShowingSettings] = useState(true)
+  const [isShowingSettings, setIsShowingSettings] = useState(false)
   const canvasIndex = useRef(null)
   const { getThemeClass } = useTheme()
   const navigate = useNavigate()

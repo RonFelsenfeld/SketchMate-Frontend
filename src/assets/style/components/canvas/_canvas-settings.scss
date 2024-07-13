@@ -49,9 +49,11 @@
     background-color: $dark-theme-clr--5;
     .settings-form {
       .input-container {
-        input[type='range'] {
-          &::-webkit-slider-thumb {
-            background-color: $dark-theme-clr;
+        .container {
+          input[type='range'] {
+            &::-webkit-slider-thumb {
+              background-color: $dark-theme-clr;
+            }
           }
         }
       }
