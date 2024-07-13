@@ -15,8 +15,8 @@ export function Canvas({ isShowingSettings, setIsShowingSettings }) {
   const canvasSettingsRef = useRef(canvasService.getDefaultSettings())
   const linePositionsRef = useRef([])
 
-  const canvasContainerRef = useRef(null)
-  const canvasRef = useRef(null)
+  const canvasContainerElRef = useRef(null)
+  const canvasElRef = useRef(null)
   const contextRef = useRef(null)
 
   const {
@@ -32,10 +32,10 @@ export function Canvas({ isShowingSettings, setIsShowingSettings }) {
     removeShape,
     clearCanvas,
     resizeCanvas,
-  } = useCanvas(canvasRef, canvasContainerRef, contextRef)
+  } = useCanvas(canvasElRef, canvasContainerElRef, contextRef)
 
   useEffect(() => {
-    const canvas = canvasRef.current
+    const canvas = canvasElRef.current
     const context = canvas.getContext('2d')
     contextRef.current = context
     resizeCanvas(canvas)
@@ -93,7 +93,7 @@ export function Canvas({ isShowingSettings, setIsShowingSettings }) {
     const hoveredShape = canvasService.findHoveredShape(shapes, x, y)
     const { addClassToElement, removeClassFromElement } = utilService
     const classFn = hoveredShape ? addClassToElement : removeClassFromElement
-    classFn(canvasContainerRef.current, 'hovering')
+    classFn(canvasContainerElRef.current, 'hovering')
 
     const { isDrawing, shape } = pen
     if (!isDrawing || shape !== LINE) return
@@ -200,9 +200,9 @@ export function Canvas({ isShowingSettings, setIsShowingSettings }) {
         updateShapes={updateShapes}
       />
 
-      <div ref={canvasContainerRef} className={`canvas-container ${getClasses()}`}>
+      <div ref={canvasContainerElRef} className={`canvas-container ${getClasses()}`}>
         <canvas
-          ref={canvasRef}
+          ref={canvasElRef}
           className="canvas"
           onClick={onCanvasClicked}
           onMouseDown={onStartDrawing}
@@ -217,6 +217,7 @@ export function Canvas({ isShowingSettings, setIsShowingSettings }) {
             settingsRef={canvasSettingsRef}
             setSelectedShape={setSelectedShape}
             setIsShowingSettings={setIsShowingSettings}
+            canvasElRef={canvasElRef}
           />
         )}
       </div>

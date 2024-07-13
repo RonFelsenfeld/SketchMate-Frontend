@@ -16,8 +16,8 @@
   @include for-mobile-layout {
     padding: 20px;
 
-    height: 50dvh;
-    width: 60vw;
+    height: 60dvh;
+    width: 65vw;
 
     .settings-form {
       width: 100%;
@@ -32,8 +32,15 @@
         }
       }
 
-      .btn-reset {
-        width: 100%;
+      .options-container {
+        flex-direction: column;
+
+        a.btn,
+        button.btn {
+          font-size: em(16px);
+          width: 100%;
+          padding-block: 15px;
+        }
       }
     }
   }
@@ -49,11 +56,13 @@
         }
       }
 
-      .btn-reset {
-        background-color: $dark-theme-clr;
+      .options-container {
+        .btn {
+          background-color: $dark-theme-clr;
 
-        &:hover {
-          background-color: $dark-theme-clr-10;
+          &:hover {
+            background-color: $dark-theme-clr-10;
+          }
         }
       }
     }
@@ -97,18 +106,25 @@
       }
     }
 
-    .btn-reset {
-      padding: 5px 10px;
-      border-radius: $controls-border-radius;
+    .options-container {
+      width: 100%;
+      gap: 20px;
 
-      font-size: em(16px);
-      color: $secondary-font-clr;
+      .btn {
+        width: 50%;
+        padding: 5px 10px;
+        border-radius: $controls-border-radius;
 
-      background-color: $main-theme-clr;
-      transition: background-color $theme-transition;
+        font-size: em(14px);
+        color: $secondary-font-clr;
+        text-align: center;
 
-      &:hover {
-        background-color: $main-theme-clr-10;
+        background-color: $main-theme-clr;
+        transition: background-color $theme-transition;
+
+        &:hover {
+          background-color: $main-theme-clr-10;
+        }
       }
     }
   }

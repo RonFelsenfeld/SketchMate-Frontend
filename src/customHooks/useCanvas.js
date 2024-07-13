@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { canvasService, ELLIPSE, RECT } from '../services/canvas.service'
 import { useTheme } from './useTheme'
 
-export function useCanvas(canvasRef, canvasContainerRef, contextRef) {
+export function useCanvas(canvasElRef, canvasContainerElRef, contextRef) {
   const [pen, setPen] = useState(canvasService.getDefaultPen())
   const [shapes, setShapes] = useState([])
   const { isDarkMode } = useTheme()
@@ -65,14 +65,16 @@ export function useCanvas(canvasRef, canvasContainerRef, contextRef) {
   }
 
   function clearCanvas() {
-    const { width, height } = canvasRef.current
-    contextRef.current.clearRect(0, 0, width, height)
+    // Not clearing using clearRect for the download will include white bg
+    const { width, height } = canvasElRef.current
+    contextRef.current.fillStyle = 'white'
+    contextRef.current.fillRect(0, 0, width, height)
     setShapes([])
   }
 
   function resizeCanvas(canvasEl) {
-    canvasEl.width = canvasContainerRef.current.clientWidth
-    canvasEl.height = canvasContainerRef.current.clientHeight
+    canvasEl.width = canvasContainerElRef.current.clientWidth
+    canvasEl.height = canvasContainerElRef.current.clientHeight
   }
 
   function _processShape(shape) {
