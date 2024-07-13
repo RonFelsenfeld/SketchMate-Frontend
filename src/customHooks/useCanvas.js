@@ -16,8 +16,8 @@ export function useCanvas(canvasRef, canvasContainerRef, contextRef) {
     // Else -> Draw existing shape (represented as an object)
     let shapeToDraw
     if (typeof shape === 'string') {
-      const { strokeColor, fillColor } = pen
-      const shapeData = { shape, x, y, strokeColor, fillColor }
+      const { strokeColor, fillColor, width: strokeWidth } = pen
+      const shapeData = { shape, x, y, strokeColor, fillColor, strokeWidth }
       shapeToDraw = canvasService.getNewShape(shapeData)
       // shapeToDraw = await canvasService.getNewShapeFromServer(shapeData)
     } else {
@@ -34,7 +34,7 @@ export function useCanvas(canvasRef, canvasContainerRef, contextRef) {
   }
 
   function highlightSelectedShape(shape) {
-    const { _id, type, angle } = shape
+    const { _id, type, angle, strokeWidth } = shape
     const highlightDrawingMap = {
       rect: _performRectDraw,
       ellipse: _performEllipseDraw,
@@ -42,8 +42,8 @@ export function useCanvas(canvasRef, canvasContainerRef, contextRef) {
 
     contextRef.current.save()
     contextRef.current.beginPath()
+    contextRef.current.lineWidth = strokeWidth > 8 ? strokeWidth / 2 : 4
     contextRef.current.setLineDash([8])
-    contextRef.current.lineWidth = 4
     contextRef.current.strokeStyle = isDarkMode ? '#4b8fd7' : '#5bc5a7'
 
     if (angle) _rotateShape(shape, _id)
@@ -55,7 +55,7 @@ export function useCanvas(canvasRef, canvasContainerRef, contextRef) {
 
   function resetStrokeStyle() {
     contextRef.current.setLineDash([])
-    contextRef.current.lineWidth = 1
+    contextRef.current.lineWidth = pen.width
   }
 
   function removeShape(shape) {
@@ -85,6 +85,7 @@ export function useCanvas(canvasRef, canvasContainerRef, contextRef) {
     contextRef.current.beginPath()
     contextRef.current.strokeStyle = shape.strokeColor
     contextRef.current.fillStyle = shape.fillColor
+    contextRef.current.lineWidth = shape.strokeWidth
     shapesDrawingHandlersMap[shape.type](shape)
     contextRef.current.closePath()
   }

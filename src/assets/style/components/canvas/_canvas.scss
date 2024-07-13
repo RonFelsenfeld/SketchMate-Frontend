@@ -2,6 +2,7 @@
   flex-grow: 1;
 
   .canvas-container {
+    overflow: hidden;
     position: relative;
     width: $canvas-container-width;
     height: 80dvh;
@@ -17,7 +18,6 @@
       height: calc(100dvh - $app-header-height);
       border: none;
       border-block-start: 2px solid $canvas-border-clr;
-      border-inline-start: 2px solid $canvas-border-clr;
     }
 
     &.shape {

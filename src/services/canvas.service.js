@@ -4,16 +4,12 @@ import { utilService } from './util.service'
 export const LINE = 'line'
 export const ELLIPSE = 'ellipse'
 export const RECT = 'rect'
-export const ROTATE_ANGLE = 5
 
 const BASE_URL = process.env.NODE_ENV === 'production' ? '/api/shape' : '//localhost:3030/api/shape'
 
-const CANVAS_KEY = 'canvasDB'
-
 export const canvasService = {
-  getCanvas,
-  saveCanvas,
   getDefaultPen,
+  getDefaultSettings,
   getNewShape,
   getNewShapeFromServer,
   findClickedShape,
@@ -22,27 +18,22 @@ export const canvasService = {
   getDefaultDragInfo,
 }
 
-function getCanvas() {
-  const shapes = utilService.loadFromStorage(CANVAS_KEY)
-  return shapes || []
-}
-
-function saveCanvas(shapes) {
-  utilService.saveToStorage(CANVAS_KEY, shapes)
-}
-
-////////////////////////////////////////////////////
-
 function getDefaultPen() {
   return {
     isDrawing: false,
     shape: LINE,
+    width: 1,
     strokeColor: '#000000',
     fillColor: '#ffffff',
   }
 }
 
-function getNewShape({ shape, x, y, strokeColor, fillColor }) {
+function getDefaultSettings() {
+  return { rotateAngle: 5, sizeDiff: 4 }
+}
+
+function getNewShape(shapeData) {
+  const { shape, x, y, strokeColor, fillColor, strokeWidth } = shapeData
   return {
     _id: utilService.makeId(),
     type: shape,
@@ -53,6 +44,7 @@ function getNewShape({ shape, x, y, strokeColor, fillColor }) {
     angle: 0,
     strokeColor,
     fillColor,
+    strokeWidth,
   }
 }
 
@@ -61,12 +53,13 @@ async function getNewShapeFromServer(shapeDate) {
   return res.data
 }
 
-function getNewLine(linePositions, strokeColor) {
+function getNewLine(linePositions, strokeColor, strokeWidth) {
   return {
     _id: utilService.makeId(),
     type: LINE,
     positions: [...linePositions],
     strokeColor,
+    strokeWidth,
   }
 }
 

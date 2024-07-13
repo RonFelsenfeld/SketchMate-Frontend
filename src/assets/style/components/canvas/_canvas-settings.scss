@@ -1,0 +1,66 @@
+.canvas-settings {
+  position: absolute;
+  inset: auto 0 0 auto;
+
+  padding: 40px;
+  border-inline-start: 2px solid $setting-border-clr;
+  border-block-start: 2px solid $setting-border-clr;
+  border-top-left-radius: $controls-border-radius;
+
+  background-color: $main-theme-clr--10;
+  transition: background-color $theme-transition;
+  box-shadow: $settings-shadow;
+  cursor: default;
+  --animate-duration: 0.6s;
+
+  &.dark {
+    background-color: $dark-theme-clr--5;
+    .settings-form {
+      .input-container {
+        input[type='range'] {
+          &::-webkit-slider-thumb {
+            background-color: $dark-theme-clr;
+          }
+        }
+      }
+    }
+  }
+
+  .settings-form {
+    justify-content: space-around;
+    gap: 30px;
+
+    .input-container {
+      width: 100%;
+      gap: 30px;
+
+      label {
+        font-size: em(16px);
+      }
+
+      input[type='range'] {
+        -webkit-appearance: none;
+        height: 3px;
+        border-radius: 2em;
+
+        background-color: $secondary-font-clr;
+        transition: background-color $theme-transition;
+        cursor: grabbing;
+
+        &::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          width: 20px;
+          height: 20px;
+
+          border-radius: 50%;
+          background-color: $main-theme-clr;
+          transition: background-color $theme-transition;
+        }
+
+        &:active {
+          pointer-events: none;
+        }
+      }
+    }
+  }
+}

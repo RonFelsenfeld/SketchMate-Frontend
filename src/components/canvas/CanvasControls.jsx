@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { ELLIPSE, LINE, RECT, ROTATE_ANGLE } from '../../services/canvas.service'
+import { ELLIPSE, LINE, RECT } from '../../services/canvas.service'
 import { utilService } from '../../services/util.service'
 import { showTooltip, hideTooltip } from '../../services/event-bus.service'
 import { useTheme } from '../../customHooks/useTheme'
@@ -8,6 +8,7 @@ export function CanvasControls({
   pen,
   setPen,
   shapes,
+  settings,
   selectedShape,
   onRemoveShape,
   clearCanvas,
@@ -63,6 +64,7 @@ export function CanvasControls({
   }
 
   const { strokeColor, fillColor } = pen
+  const { rotateAngle, sizeDiff } = settings
   return (
     <section
       ref={controlsRef}
@@ -91,7 +93,7 @@ export function CanvasControls({
 
       <button
         className="btn btn-size plus"
-        onClick={() => onSetSize(1)}
+        onClick={() => onSetSize(sizeDiff)}
         onMouseEnter={ev => showTooltip(ev.currentTarget, 'Increase Size')}
         onMouseLeave={hideTooltip}
         disabled={!selectedShape}
@@ -99,7 +101,7 @@ export function CanvasControls({
 
       <button
         className="btn btn-size minus gap"
-        onClick={() => onSetSize(-1)}
+        onClick={() => onSetSize(-sizeDiff)}
         onMouseEnter={ev => showTooltip(ev.currentTarget, 'Decrease Size')}
         onMouseLeave={hideTooltip}
         disabled={!selectedShape}
@@ -107,7 +109,7 @@ export function CanvasControls({
 
       <button
         className="btn btn-rotate right"
-        onClick={() => onRotateShape(ROTATE_ANGLE)}
+        onClick={() => onRotateShape(rotateAngle)}
         onMouseEnter={ev => showTooltip(ev.currentTarget, 'Rotate Right')}
         onMouseLeave={hideTooltip}
         disabled={!selectedShape}
@@ -115,7 +117,7 @@ export function CanvasControls({
 
       <button
         className="btn btn-rotate left gap"
-        onClick={() => onRotateShape(-ROTATE_ANGLE)}
+        onClick={() => onRotateShape(-rotateAngle)}
         onMouseEnter={ev => showTooltip(ev.currentTarget, 'Rotate Left')}
         onMouseLeave={hideTooltip}
         disabled={!selectedShape}

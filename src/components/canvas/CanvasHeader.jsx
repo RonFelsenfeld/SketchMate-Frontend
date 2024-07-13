@@ -1,7 +1,7 @@
 import { useTheme } from '../../customHooks/useTheme'
 import { ThemeToggleBtn } from '../general/ThemeToggleBtn'
 
-export function CanvasHeader({ onBackToHome }) {
+export function CanvasHeader({ onBackToHome, setIsShowingSettings }) {
   const { getThemeClass } = useTheme()
 
   return (
@@ -12,6 +12,12 @@ export function CanvasHeader({ onBackToHome }) {
 
       <div className="btns-container flex align-center">
         <ThemeToggleBtn />
+
+        <button
+          className="btn-settings"
+          title="Show settings"
+          onClick={() => setIsShowingSettings(true)}
+        ></button>
 
         <button className="btn-home" title="Return to home page" onClick={onBackToHome}></button>
       </div>

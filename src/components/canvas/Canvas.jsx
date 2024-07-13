@@ -5,12 +5,14 @@ import { utilService } from '../../services/util.service'
 
 import { useCanvas } from '../../customHooks/useCanvas'
 import { CanvasControls } from './CanvasControls'
+import { CanvasSettings } from './CanvasSettings'
 
-export function Canvas() {
+export function Canvas({ isShowingSettings, setIsShowingSettings }) {
   const [selectedShape, setSelectedShape] = useState(null)
   const [keyPressed, setKeyPressed] = useState('')
 
   const dragInfoRef = useRef(canvasService.getDefaultDragInfo())
+  const canvasSettingsRef = useRef(canvasService.getDefaultSettings())
   const linePositionsRef = useRef([])
 
   const canvasContainerRef = useRef(null)
@@ -104,7 +106,8 @@ export function Canvas() {
     contextRef.current.closePath()
     if (pen.shape !== LINE) return
 
-    const newLine = canvasService.getNewLine(linePositionsRef.current, pen.strokeColor)
+    const { strokeColor, width } = pen
+    const newLine = canvasService.getNewLine(linePositionsRef.current, strokeColor, width)
     linePositionsRef.current = []
     setPen(prevPen => ({ ...prevPen, isDrawing: false }))
     setShapes(prevShapes => [...prevShapes, newLine])
@@ -186,17 +189,18 @@ export function Canvas() {
 
   return (
     <section className="canvas-section flex">
-      <div ref={canvasContainerRef} className={`canvas-container ${getClasses()}`}>
-        <CanvasControls
-          pen={pen}
-          setPen={setPen}
-          shapes={shapes}
-          selectedShape={selectedShape}
-          onRemoveShape={onRemoveShape}
-          clearCanvas={clearCanvas}
-          updateShapes={updateShapes}
-        />
+      <CanvasControls
+        pen={pen}
+        setPen={setPen}
+        shapes={shapes}
+        settings={canvasSettingsRef.current}
+        selectedShape={selectedShape}
+        onRemoveShape={onRemoveShape}
+        clearCanvas={clearCanvas}
+        updateShapes={updateShapes}
+      />
 
+      <div ref={canvasContainerRef} className={`canvas-container ${getClasses()}`}>
         <canvas
           ref={canvasRef}
           className="canvas"
@@ -205,6 +209,16 @@ export function Canvas() {
           onMouseMove={onDrawing}
           onMouseUp={onEndDrawing}
         ></canvas>
+
+        {isShowingSettings && (
+          <CanvasSettings
+            penWidth={pen.width}
+            setPen={setPen}
+            settingsRef={canvasSettingsRef}
+            setSelectedShape={setSelectedShape}
+            setIsShowingSettings={setIsShowingSettings}
+          />
+        )}
       </div>
     </section>
   )
