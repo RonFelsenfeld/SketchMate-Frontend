@@ -108,6 +108,7 @@
   .btn {
     @include controlBtn;
     background-color: $control-btn-bg-clr;
+    color: $main-font-clr;
 
     &::before {
       font-size: em(14px);

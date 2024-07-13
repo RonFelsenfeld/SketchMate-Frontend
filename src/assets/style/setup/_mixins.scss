@@ -31,6 +31,10 @@
 }
 
 @mixin controlBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   width: em(36px);
   height: em(36px);
 
