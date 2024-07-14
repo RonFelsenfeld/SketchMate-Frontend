@@ -131,6 +131,7 @@ export function Canvas({ isShowingSettings, setIsShowingSettings }) {
 
   function handleEndDragging() {
     dragInfoRef.current = canvasService.getDefaultDragInfo()
+    setSelectedShape({ ...selectedShape }) // Forcing re-render to change cursor
   }
 
   function onRemoveShape() {
