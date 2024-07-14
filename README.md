@@ -58,3 +58,8 @@ npm run dev
 **4. Install [SketchMate-Backend](https://github.com/RonFelsenfeld/SketchMate-Backend) locally and run the server.** <br>
 *(Follow the instructions in it's README file)*
 
+## Contact
+> [Linkedin](https://www.linkedin.com/in/ron-felsenfeld/)<br>
+
+> <a href="mailto:ronfelsenfeld@gmail.com" style="vertical-align: middle; text-decoration: none; color: black;">Email</a>
+
