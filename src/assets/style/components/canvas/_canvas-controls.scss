@@ -72,14 +72,14 @@
 
     &:hover {
       .btn {
-        &:has(+ .btn:not(:disabled, .btn-remove):hover):not(:disabled, .btn-remove) {
+        &:has(+ .btn:not(.btn-remove):hover):not(:disabled, .btn-remove, .btn-clear) {
           @include hoveredBtn(1.15, $dark-theme-clr-5);
         }
 
-        &:hover:not(:disabled, .btn-remove) {
+        &:hover:not(:disabled, .btn-remove, .btn-clear) {
           @include hoveredBtn(1.3, $dark-theme-clr-20);
 
-          & + .btn:not(:disabled, .btn-remove) {
+          & + .btn:not(:disabled, .btn-remove, .btn-clear) {
             @include hoveredBtn(1.15, $dark-theme-clr-5);
           }
         }
@@ -91,14 +91,14 @@
     gap: 15px;
 
     .btn {
-      &:has(+ .btn:not(:disabled, .btn-remove):hover):not(:disabled, .btn-remove) {
+      &:has(+ .btn:not(.btn-remove):hover):not(:disabled, .btn-remove, .btn-clear) {
         @include hoveredBtn(1.15, $main-theme-clr--5);
       }
 
-      &:hover:not(:disabled, .btn-remove) {
+      &:hover:not(:disabled, .btn-remove, .btn-clear) {
         @include hoveredBtn(1.3, $main-theme-clr-20);
 
-        & + .btn:not(:disabled, .btn-remove) {
+        & + .btn:not(:disabled, .btn-remove, .btn-clear) {
           @include hoveredBtn(1.15, $main-theme-clr--5);
         }
       }
@@ -228,7 +228,7 @@
         content: '\f12d';
       }
 
-      &:hover {
+      &:not(:disabled):hover {
         background-color: darken($remove-btn-bg-clr, 20%);
       }
     }
@@ -241,7 +241,7 @@
         content: '\f1f8';
       }
 
-      &:hover {
+      &:not(:disabled):hover {
         background-color: lighten($main-font-clr, 10%);
       }
     }
