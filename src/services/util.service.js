@@ -11,11 +11,11 @@ export const utilService = {
 }
 
 function makeId(length = 6) {
-  var txt = ''
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  const POSSIBLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  let txt = ''
 
-  for (var i = 0; i < length; i++) {
-    txt += possible.charAt(Math.floor(Math.random() * possible.length))
+  for (let i = 0; i < length; i++) {
+    txt += POSSIBLE.charAt(Math.floor(Math.random() * POSSIBLE.length))
   }
 
   return txt

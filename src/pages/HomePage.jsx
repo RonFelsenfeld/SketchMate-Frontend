@@ -21,9 +21,9 @@ export function HomePage() {
     >
       <AppHeader />
 
-      <section className="hero-section flex column align-center justify-center">
-        <div className="main-content flex column align-center justify-center">
-          <div className="heading-container flex column align-center justify-center">
+      <section className="hero-section flex column center">
+        <div className="main-content flex column center">
+          <div className="heading-container flex column center">
             <h1 className="main-heading">
               Welcome to
               <span>

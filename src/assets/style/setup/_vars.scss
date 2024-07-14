@@ -9,7 +9,7 @@ $secondary-font-clr: rgb(255, 255, 255);
 $main-font-family: MontserratRegular;
 $heading-font-family: MontserratBold;
 
-// * Color Palette
+// * Theme Color Palette
 $main-theme-clr-20: rgb(24, 90, 71);
 $main-theme-clr-10: rgb(73, 167, 140);
 $main-theme-clr: rgb(91, 197, 167);
@@ -22,7 +22,6 @@ $dark-theme-clr-5: rgb(133, 174, 219);
 $dark-theme-clr: rgb(75, 143, 215);
 $dark-theme-clr--5: rgb(171, 202, 236);
 
-// * Theme
 $light-page-bg-clr: rgb(207, 255, 241);
 $light-page-gradient: linear-gradient(
   180deg,
@@ -40,6 +39,8 @@ $control-btn-bg-clr: rgb(230, 230, 230);
 $remove-btn-bg-clr: rgb(253, 60, 60);
 $theme-btn-light-clr: rgb(131, 213, 240);
 $theme-btn-dark-clr: rgb(99, 99, 99);
+$toggle-btn-moon-clr: rgb(241, 196, 15);
+$toggle-btn-sun-clr: rgb(243, 156, 18);
 
 // * Borders
 $canvas-border-clr: rgb(102, 102, 102);
@@ -55,7 +56,6 @@ $btn-cta-pulse-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
 $btn-cta-shadow-light: 0 0 0 0px $main-theme-clr;
 $btn-cta-shadow-dark: 0 0 0 0px $dark-theme-clr;
 $settings-shadow: -3px -2px 10px 1px rgba(158, 158, 158, 0.474);
-
 $controls-border-radius: 5px;
 $theme-transition: 0.4s;
 

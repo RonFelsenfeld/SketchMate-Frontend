@@ -46,9 +46,8 @@ export function Canvas({ isShowingSettings, setIsShowingSettings }) {
   useEffect(() => {
     clearCanvas()
     drawAllShapes()
-
     if (selectedShape) highlightSelectedShape(selectedShape)
-  }, [selectedShape, keyPressed])
+  }, [selectedShape])
 
   useEffect(() => {
     if (keyPressed) handleKeyboardPress(keyPressed)

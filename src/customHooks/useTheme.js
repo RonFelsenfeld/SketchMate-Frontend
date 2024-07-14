@@ -1,10 +1,11 @@
 import { useContext, useEffect } from 'react'
-import { ThemeContext } from '../contexts/ThemeContext'
 import { utilService } from '../services/util.service'
+import { ThemeContext } from '../contexts/ThemeContext'
 
 export function useTheme() {
   const { isDarkMode, setIsDarkMode } = useContext(ThemeContext)
 
+  // Determine theme based on local storage
   useEffect(() => {
     const THEME_KEY = 'themeDB'
     if (isDarkMode) utilService.saveToStorage(THEME_KEY, 'dark')

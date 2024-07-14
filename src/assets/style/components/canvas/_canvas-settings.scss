@@ -14,10 +14,9 @@
   --animate-duration: 0.6s;
 
   @include for-mobile-layout {
-    padding: 20px;
-
     height: 60dvh;
     width: 65vw;
+    padding: 20px;
 
     .settings-form {
       width: 100%;
@@ -47,6 +46,7 @@
 
   &.dark {
     background-color: $dark-theme-clr--5;
+
     .settings-form {
       .input-container {
         .container {

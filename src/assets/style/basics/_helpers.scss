@@ -16,4 +16,9 @@
   &.align-center {
     align-items: center;
   }
+
+  &.center {
+    align-items: center;
+    justify-content: center;
+  }
 }

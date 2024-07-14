@@ -24,8 +24,8 @@
       &::before {
         font-size: em(16px);
         font-family: faSolid;
-        transition: color $theme-transition;
         color: $main-font-clr;
+        transition: color $theme-transition;
       }
 
       &.btn-home {

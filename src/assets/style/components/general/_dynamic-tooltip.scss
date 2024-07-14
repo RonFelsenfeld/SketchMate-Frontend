@@ -1,19 +1,18 @@
 .dynamic-tooltip {
   position: absolute;
-  transform: translate(-50%, -140%);
-  white-space: nowrap;
-
   padding: 7px 14px;
   border-radius: $controls-border-radius;
 
   font-size: em(14px);
   color: $secondary-font-clr;
   line-height: em(22.5px);
+  white-space: nowrap;
 
   background-color: $main-font-clr;
-  --animate-duration: 0.3s;
   box-shadow: $tooltip-shadow;
   z-index: 1;
+  transform: translate(-50%, -140%);
+  --animate-duration: 0.3s;
 
   &.static {
     transform: translate(-50%, -120%);

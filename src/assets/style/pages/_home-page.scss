@@ -87,7 +87,6 @@
 
       .btn-cta {
         position: relative;
-
         padding: 15px 50px 15px 30px;
         border-radius: 2em;
 
@@ -106,8 +105,8 @@
 
           width: 0%;
           height: 100%;
-
           border-radius: 2em;
+
           background-color: darken($main-theme-clr, 15%);
           transition: all 0.4s;
           z-index: -1;
