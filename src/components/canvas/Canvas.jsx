@@ -140,6 +140,11 @@ export function Canvas({ isShowingSettings, setIsShowingSettings }) {
     setSelectedShape(null)
   }
 
+  function onClearCanvas() {
+    clearCanvas()
+    setSelectedShape(null)
+  }
+
   function updateShapes(updatedShape) {
     setSelectedShape(updatedShape)
     setShapes(shapes.map(s => (s._id === updatedShape._id ? updatedShape : s)))
@@ -195,7 +200,7 @@ export function Canvas({ isShowingSettings, setIsShowingSettings }) {
         settings={canvasSettingsRef.current}
         selectedShape={selectedShape}
         onRemoveShape={onRemoveShape}
-        clearCanvas={clearCanvas}
+        onClearCanvas={onClearCanvas}
         updateShapes={updateShapes}
       />
 

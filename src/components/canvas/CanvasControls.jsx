@@ -11,7 +11,7 @@ export function CanvasControls({
   settings,
   selectedShape,
   onRemoveShape,
-  clearCanvas,
+  onClearCanvas,
   updateShapes,
 }) {
   const controlsRef = useRef(null)
@@ -166,7 +166,7 @@ export function CanvasControls({
 
       <button
         className="btn btn-clear"
-        onClick={clearCanvas}
+        onClick={onClearCanvas}
         onMouseEnter={ev => showTooltip(ev.currentTarget, 'Clear Canvas')}
         onMouseLeave={hideTooltip}
         disabled={!shapes.length}
