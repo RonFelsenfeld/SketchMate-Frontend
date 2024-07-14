@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 
 import { utilService } from '../services/util.service'
@@ -12,6 +12,11 @@ export function CanvasIndex() {
   const canvasIndex = useRef(null)
   const { getThemeClass } = useTheme()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    window.onbeforeunload = () => true
+    return () => (window.onbeforeunload = null)
+  }, [])
 
   function onBackToHome() {
     utilService.animateCSS(canvasIndex.current, 'slideOutRight')

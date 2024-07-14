@@ -84,16 +84,3 @@ function getDefaultDragInfo() {
     pos: null,
   }
 }
-
-// Calculating new coords after rotate
-function rotatePoint(cx, cy, x, y, angle) {
-  const radians = (Math.PI / 180) * angle
-
-  const cos = Math.cos(radians)
-  const sin = Math.sin(radians)
-
-  const nx = cos * (x - cx) - sin * (y - cy) + cx
-  const ny = sin * (x - cx) + cos * (y - cy) + cy
-
-  return { x: nx, y: ny }
-}

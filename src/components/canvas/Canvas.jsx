@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-
 import { canvasService, LINE } from '../../services/canvas.service'
 import { utilService } from '../../services/util.service'
-
 import { useCanvas } from '../../customHooks/useCanvas'
+
 import { CanvasControls } from './CanvasControls'
 import { CanvasSettings } from './CanvasSettings'
 
@@ -81,8 +80,8 @@ export function Canvas({ isShowingSettings, setIsShowingSettings }) {
     resetStrokeStyle()
 
     const pos = { x, y }
-    setPen(prevPen => ({ ...prevPen, isDrawing: true }))
     linePositionsRef.current = [pos]
+    setPen(prevPen => ({ ...prevPen, isDrawing: true }))
   }
 
   function onDrawing({ nativeEvent }) {
